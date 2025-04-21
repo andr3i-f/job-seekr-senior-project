@@ -5,7 +5,7 @@ export default function Home() {
     <Box
       sx={{
         width: "100vw",
-        height: "200vh"
+        height: "200vh",
       }}
     >
       <Stack direction={"column"} alignItems={"center"}>
@@ -17,7 +17,13 @@ export default function Home() {
         </Typography>
         <Button
           variant="contained"
-          sx={{ mt: "2vh", backgroundColor: "white", color: "#64558f", textTransform: "lowercase", borderRadius: "13px" }}
+          sx={{
+            mt: "2vh",
+            backgroundColor: "white",
+            color: "#64558f",
+            textTransform: "lowercase",
+            borderRadius: "13px",
+          }}
         >
           get started
         </Button>

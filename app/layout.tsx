@@ -27,8 +27,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Box sx={{background: "linear-gradient(180deg, #2C1D68, #5638CE)"}}>
-          <NavBar/>
+        <Box sx={{ background: "linear-gradient(180deg, #2C1D68, #5638CE)" }}>
+          <NavBar />
           {children}
         </Box>
       </body>

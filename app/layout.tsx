@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import NavBar from "./ui/NavBar";
+import { Box } from "@mui/material";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,8 +26,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {children}
+      <body>
+        <Box sx={{ background: "linear-gradient(180deg, #2C1D68, #5638CE)" }}>
+          <NavBar />
+          {children}
+        </Box>
       </body>
     </html>
   );

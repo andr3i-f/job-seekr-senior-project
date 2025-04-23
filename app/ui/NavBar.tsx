@@ -1,8 +1,13 @@
-import { AccountCircle } from "@mui/icons-material";
-import { Box, Stack, Typography } from "@mui/material";
+"use client";
+
+import { AccountCircle, Image } from "@mui/icons-material";
+import { Box, Button, Stack, Typography } from "@mui/material";
+import { useRouter } from "next/navigation";
 import { JSX } from "react";
 
 export default function NavBar(): JSX.Element {
+  const router = useRouter();
+
   return (
     <Box
       width={"100vw"}
@@ -22,7 +27,13 @@ export default function NavBar(): JSX.Element {
         alignItems="center"
         px={2}
       >
-        <Typography>jobseekr.</Typography>
+        <Button>
+          <img
+            src="/jobseekrlogo.png"
+            height={"30px"}
+            onClick={() => router.replace("/")}
+          />
+        </Button>
         <AccountCircle sx={{ fontSize: "32px" }} />
       </Stack>
     </Box>

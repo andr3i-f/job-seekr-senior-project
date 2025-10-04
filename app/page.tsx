@@ -1,3 +1,4 @@
+import { NAVBAR_HEIGHT_IN_VH } from "@/constants/layout";
 import { Box, Button, Stack, Typography } from "@mui/material";
 
 export default function Home() {
@@ -5,7 +6,7 @@ export default function Home() {
     <Box
       sx={{
         width: "100vw",
-        height: "200vh",
+        height: `${200 - NAVBAR_HEIGHT_IN_VH}vh`,
       }}
     >
       <Stack direction={"column"} alignItems={"center"}>

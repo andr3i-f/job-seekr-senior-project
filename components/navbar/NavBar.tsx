@@ -1,3 +1,4 @@
+import { NAVBAR_HEIGHT_IN_VH } from "@/constants/layout";
 import { AccountCircle } from "@mui/icons-material";
 import { Box, Stack, Typography } from "@mui/material";
 import { JSX } from "react";
@@ -6,7 +7,7 @@ export default function NavBar(): JSX.Element {
   return (
     <Box
       width={"100vw"}
-      height={"6vh"}
+      height={`${NAVBAR_HEIGHT_IN_VH}vh`}
       sx={{
         background: "#372483",
         boxShadow: "2",

@@ -3,9 +3,14 @@ FROM node:24-slim
 RUN mkdir /app
 WORKDIR /app
 
-COPY . .
+COPY package.json package-lock.json ./
+RUN npm ci
 
-RUN npm install
+COPY . .
+RUN chmod +x ./docker-entrypoint.sh
+
+RUN npm run build
 
 EXPOSE 3000
-ENTRYPOINT [ "/bin/bash" ]
+
+ENTRYPOINT [ "./docker-entrypoint.sh" ]

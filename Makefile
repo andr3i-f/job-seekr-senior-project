@@ -4,7 +4,7 @@ buildDev:
 	docker build -t $(CONTAINER_TAG) -f ./.docker/development.dockerfile .
 
 runDev:
-	docker run -it --rm --volume .:/app --publish 3000:3000 --env-file .env $(CONTAINER_TAG)
+	docker run -it --rm --volume .:/app --publish 3000:3000 --network=job-seekr-finder-api_local-dev-net --env-file .env $(CONTAINER_TAG)
 
 buildProd:
 	docker build -t $(CONTAINER_TAG) .

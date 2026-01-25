@@ -12,14 +12,27 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: "Not authenticated" }, { status: 400 });
   }
 
-  const { data: axiosData } = await axios.get(
-    process.env.JOB_SEEKR_JOB_API! + "/test/specific_test",
-    {
-      params: { test_name: test_name },
-      headers: { Authorization: `Bearer ${jwt}` },
-    },
-  );
-  return NextResponse.json({ message: axiosData }, { status: 200 });
+  try {
+    const { data: axiosData } = await axios.get(
+      process.env.JOB_SEEKR_JOB_API! + "/test/specific_test",
+      {
+        params: { test_name: test_name },
+        headers: { Authorization: `Bearer ${jwt}` },
+      },
+    );
+    return NextResponse.json({ message: axiosData }, { status: 200 });
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return NextResponse.json(
+        { error: error.response?.data?.message || error.message },
+        { status: error.response?.status || 500 },
+      );
+    }
+    return NextResponse.json(
+      { error: "An unexpected error occurred" },
+      { status: 500 },
+    );
+  }
 }
 
 export async function POST(req: Request) {
@@ -35,14 +48,27 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Not authenticated" }, { status: 400 });
   }
 
-  const { data: axiosData } = await axios.post(
-    process.env.JOB_SEEKR_JOB_API! + "/test/add",
-    { test_name: body["test"] },
-    { headers: { "Content-Type": "application/json" } },
-  );
+  try {
+    const { data: axiosData } = await axios.post(
+      process.env.JOB_SEEKR_JOB_API! + "/test/add",
+      { test_name: body["test"] },
+      { headers: { "Content-Type": "application/json" } },
+    );
 
-  return NextResponse.json(
-    { message: axiosData },
-    { status: axiosData.status },
-  );
+    return NextResponse.json(
+      { message: axiosData },
+      { status: axiosData.status },
+    );
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return NextResponse.json(
+        { error: error.response?.data?.message || error.message },
+        { status: error.response?.status || 500 },
+      );
+    }
+    return NextResponse.json(
+      { error: "An unexpected error occurred" },
+      { status: 500 },
+    );
+  }
 }

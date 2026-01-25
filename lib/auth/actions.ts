@@ -24,3 +24,10 @@ export async function login() {
     redirect(data.url);
   }
 }
+
+export async function gather_jwt_from_session() {
+  const supabase = await createClient();
+  const { data } = await supabase.auth.getSession();
+  console.log(data)
+  return data?.session?.access_token
+}

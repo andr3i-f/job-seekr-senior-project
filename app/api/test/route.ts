@@ -1,22 +1,20 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import axios from "axios";
+import { gather_jwt_from_session } from "@/lib/auth/actions";
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
-
   const test_name = searchParams.get("test");
-  const supabase = await createClient();
 
-  const { data, error } = await supabase.auth.getSession();
-
-  if (error) {
+  const jwt = gather_jwt_from_session();
+  if (!jwt) {
     return NextResponse.json({ error: "Not authenticated" }, { status: 400 });
   }
 
   const { data: axiosData } = await axios.get(
     process.env.JOB_SEEKR_JOB_API! + "/test/specific_test",
-    { params: { test_name: test_name } },
+    { params: { test_name: test_name }, headers: { 'Authorization': `Bearer ${jwt}` } },
   );
   return NextResponse.json({ message: axiosData }, { status: 200 });
 }

@@ -33,7 +33,7 @@ export default function TestPage() {
       >
         <TextField
           onChange={(e) => setTestName(e.target.value)}
-          defaultValue={"enter test value..."}
+          placeholder={"enter test value..."}
         />
         <Button variant="contained" onClick={() => createTestEntry()}>
           send data

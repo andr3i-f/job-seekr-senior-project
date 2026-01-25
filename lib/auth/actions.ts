@@ -25,7 +25,7 @@ export async function login() {
   }
 }
 
-export async function gather_jwt_from_session() {
+export async function gatherJwtFromSession() {
   const supabase = await createClient();
   const { data } = await supabase.auth.getSession();
 

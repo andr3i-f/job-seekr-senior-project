@@ -37,7 +37,10 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   const body = await req.json();
   if (!body || !("test" in body)) {
-    return NextResponse.json({ error: "'test' key missing from body!" });
+    return NextResponse.json(
+      { error: "'test' key missing from body!" },
+      { status: 400 },
+    );
   }
 
   const jwt = await gather_jwt_from_session();

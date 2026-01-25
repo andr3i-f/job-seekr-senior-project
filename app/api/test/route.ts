@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
 import axios from "axios";
 import { gather_jwt_from_session } from "@/lib/auth/actions";
 
@@ -41,10 +40,8 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "'test' key missing from body!" });
   }
 
-  const supabase = await createClient();
-  const { data, error } = await supabase.auth.getSession();
-
-  if (error) {
+  const jwt = await gather_jwt_from_session();
+  if (!jwt) {
     return NextResponse.json({ error: "Not authenticated" }, { status: 400 });
   }
 
@@ -52,13 +49,15 @@ export async function POST(req: Request) {
     const { data: axiosData } = await axios.post(
       process.env.JOB_SEEKR_JOB_API! + "/test/add",
       { test_name: body["test"] },
-      { headers: { "Content-Type": "application/json" } },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${jwt}`,
+        },
+      },
     );
 
-    return NextResponse.json(
-      { message: axiosData },
-      { status: axiosData.status },
-    );
+    return NextResponse.json({ message: axiosData }, { status: 200 });
   } catch (error) {
     if (axios.isAxiosError(error)) {
       return NextResponse.json(

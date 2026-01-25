@@ -7,14 +7,17 @@ export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const test_name = searchParams.get("test");
 
-  const jwt = gather_jwt_from_session();
+  const jwt = await gather_jwt_from_session();
   if (!jwt) {
     return NextResponse.json({ error: "Not authenticated" }, { status: 400 });
   }
 
   const { data: axiosData } = await axios.get(
     process.env.JOB_SEEKR_JOB_API! + "/test/specific_test",
-    { params: { test_name: test_name }, headers: { 'Authorization': `Bearer ${jwt}` } },
+    {
+      params: { test_name: test_name },
+      headers: { Authorization: `Bearer ${jwt}` },
+    },
   );
   return NextResponse.json({ message: axiosData }, { status: 200 });
 }

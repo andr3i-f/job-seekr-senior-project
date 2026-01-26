@@ -1,9 +1,25 @@
+"use client";
+
 import { NAVBAR_HEIGHT_IN_VH } from "@/constants/layout";
 import { AccountCircle } from "@mui/icons-material";
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Button, IconButton, Stack } from "@mui/material";
 import { JSX } from "react";
+import { useRouter } from "next/navigation";
+import { useUser } from "../providers/UserProvider";
 
 export default function NavBar(): JSX.Element {
+  const router = useRouter();
+  const data = useUser();
+  console.log(data)
+
+  const profileButtonOnClick = () => {
+    router.replace("/login")
+  }
+
+  const homeButtonOnClick = () => {
+    router.replace("/")
+  }
+    
   return (
     <Box
       width={"100vw"}
@@ -23,8 +39,10 @@ export default function NavBar(): JSX.Element {
         alignItems="center"
         px={2}
       >
-        <Typography>jobseekr.</Typography>
-        <AccountCircle sx={{ fontSize: "32px" }} />
+        <Button size="large"  sx={{color: "white", textTransform: "none"}} onClick={homeButtonOnClick}>jobseekr.</Button>
+        <IconButton aria-label="profile-or-login-button" sx={{ pr: 3, color: "white", scale: "1.25" }} onClick={profileButtonOnClick}>
+          <AccountCircle/>
+        </IconButton>
       </Stack>
     </Box>
   );

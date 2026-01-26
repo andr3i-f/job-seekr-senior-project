@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 
 import { createClient } from "@/lib/supabase/server";
+import { User } from "@supabase/supabase-js";
 
 export async function login() {
   const supabase = await createClient();
@@ -30,4 +31,11 @@ export async function gatherJwtFromSession() {
   const { data } = await supabase.auth.getSession();
 
   return data?.session?.access_token;
+}
+
+export async function getUserInfo(): Promise<null | User> {
+  const supabase = await createClient();
+  const { data } = await supabase.auth.getUser();
+
+  return data?.user
 }

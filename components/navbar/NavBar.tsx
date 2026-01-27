@@ -52,11 +52,11 @@ export default function NavBar(): JSX.Element {
         <Box sx={{ pr: 3 }}>
           <Button
             variant={"outlined"}
-            endIcon={data ? <AccountCircle /> : <Login />}
+            endIcon={user ? <AccountCircle /> : <Login />}
             sx={{ textTransform: "none", color: "white", borderColor: "white" }}
             onClick={profileButtonOnClick}
           >
-            {data ? "dashboard" : "login"}
+            {user ? "dashboard" : "login"}
           </Button>
         </Box>
       </Stack>

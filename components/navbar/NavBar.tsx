@@ -1,9 +1,28 @@
+"use client";
+
 import { NAVBAR_HEIGHT_IN_VH } from "@/constants/layout";
-import { AccountCircle } from "@mui/icons-material";
-import { Box, Stack, Typography } from "@mui/material";
+import { AccountCircle, Login } from "@mui/icons-material";
+import { Box, Button, Stack } from "@mui/material";
 import { JSX } from "react";
+import { useRouter } from "next/navigation";
+import { useUser } from "../providers/UserProvider";
 
 export default function NavBar(): JSX.Element {
+  const router = useRouter();
+  const user = useUser();
+
+  const profileButtonOnClick = () => {
+    if (user) {
+      router.replace("/dashboard");
+    } else {
+      router.replace("/login");
+    }
+  };
+
+  const homeButtonOnClick = () => {
+    router.replace("/");
+  };
+
   return (
     <Box
       width={"100vw"}
@@ -23,8 +42,23 @@ export default function NavBar(): JSX.Element {
         alignItems="center"
         px={2}
       >
-        <Typography>jobseekr.</Typography>
-        <AccountCircle sx={{ fontSize: "32px" }} />
+        <Button
+          size="large"
+          sx={{ color: "white", textTransform: "none" }}
+          onClick={homeButtonOnClick}
+        >
+          jobseekr.
+        </Button>
+        <Box sx={{ pr: 3 }}>
+          <Button
+            variant={"outlined"}
+            endIcon={user ? <AccountCircle /> : <Login />}
+            sx={{ textTransform: "none", color: "white", borderColor: "white" }}
+            onClick={profileButtonOnClick}
+          >
+            {user ? "dashboard" : "login"}
+          </Button>
+        </Box>
       </Stack>
     </Box>
   );

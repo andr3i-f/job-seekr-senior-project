@@ -10,16 +10,19 @@ import { useUser } from "../providers/UserProvider";
 export default function NavBar(): JSX.Element {
   const router = useRouter();
   const data = useUser();
-  console.log(data)
 
   const profileButtonOnClick = () => {
-    router.replace("/login")
-  }
+    if (data) {
+      router.replace("/dashboard");
+    } else {
+      router.replace("/login");
+    }
+  };
 
   const homeButtonOnClick = () => {
-    router.replace("/")
-  }
-    
+    router.replace("/");
+  };
+
   return (
     <Box
       width={"100vw"}
@@ -39,9 +42,19 @@ export default function NavBar(): JSX.Element {
         alignItems="center"
         px={2}
       >
-        <Button size="large"  sx={{color: "white", textTransform: "none"}} onClick={homeButtonOnClick}>jobseekr.</Button>
-        <IconButton aria-label="profile-or-login-button" sx={{ pr: 3, color: "white", scale: "1.25" }} onClick={profileButtonOnClick}>
-          <AccountCircle/>
+        <Button
+          size="large"
+          sx={{ color: "white", textTransform: "none" }}
+          onClick={homeButtonOnClick}
+        >
+          jobseekr.
+        </Button>
+        <IconButton
+          aria-label="profile-or-login-button"
+          sx={{ pr: 3, color: "white", scale: "1.25" }}
+          onClick={profileButtonOnClick}
+        >
+          <AccountCircle />
         </IconButton>
       </Stack>
     </Box>

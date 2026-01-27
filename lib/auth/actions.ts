@@ -37,5 +37,5 @@ export async function getUserInfo(): Promise<null | User> {
   const supabase = await createClient();
   const { data } = await supabase.auth.getUser();
 
-  return data?.user
+  return data?.user;
 }

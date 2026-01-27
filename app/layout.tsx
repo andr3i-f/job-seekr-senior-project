@@ -5,7 +5,6 @@ import NavBar from "@/components/navbar/NavBar";
 import { Box } from "@mui/material";
 import { getUserInfo } from "@/lib/auth/actions";
 import { UserProvider } from "@/components/providers/UserProvider";
-import { useRouter } from "next/router";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

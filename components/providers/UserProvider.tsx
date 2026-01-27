@@ -1,7 +1,7 @@
 "use client";
 
-import React, { createContext, JSX, useContext } from "react";
-import { User } from "@supabase/supabase-js";
+import React, { createContext, useContext } from "react";
+import type { User } from "@supabase/supabase-js";
 
 const UserContext = createContext<User | null>(null);
 
@@ -10,7 +10,7 @@ export const UserProvider = ({
   children,
 }: {
   value: User | null;
-  children: JSX.Element | JSX.Element[];
+  children: React.ReactNode;
 }) => {
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };

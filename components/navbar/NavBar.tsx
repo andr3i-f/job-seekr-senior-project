@@ -9,10 +9,10 @@ import { useUser } from "../providers/UserProvider";
 
 export default function NavBar(): JSX.Element {
   const router = useRouter();
-  const data = useUser();
+  const user = useUser();
 
   const profileButtonOnClick = () => {
-    if (data) {
+    if (user) {
       router.replace("/dashboard");
     } else {
       router.replace("/login");

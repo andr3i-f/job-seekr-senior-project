@@ -1,8 +1,8 @@
 "use client";
 
 import { NAVBAR_HEIGHT_IN_VH } from "@/constants/layout";
-import { AccountCircle } from "@mui/icons-material";
-import { Box, Button, IconButton, Stack } from "@mui/material";
+import { AccountCircle, Login } from "@mui/icons-material";
+import { Box, Button, Stack } from "@mui/material";
 import { JSX } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "../providers/UserProvider";
@@ -49,13 +49,16 @@ export default function NavBar(): JSX.Element {
         >
           jobseekr.
         </Button>
-        <IconButton
-          aria-label="profile-or-login-button"
-          sx={{ pr: 3, color: "white", scale: "1.25" }}
-          onClick={profileButtonOnClick}
-        >
-          <AccountCircle />
-        </IconButton>
+        <Box sx={{ pr: 3 }}>
+          <Button
+            variant={"outlined"}
+            endIcon={data ? <AccountCircle /> : <Login />}
+            sx={{ textTransform: "none", color: "white", borderColor: "white" }}
+            onClick={profileButtonOnClick}
+          >
+            {data ? "dashboard" : "login"}
+          </Button>
+        </Box>
       </Stack>
     </Box>
   );

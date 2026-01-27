@@ -33,7 +33,7 @@ export async function gatherJwtFromSession() {
   return data?.session?.access_token;
 }
 
-export async function getUserInfo(): Promise<null | User> {
+export async function getUserInfo(): Promise<User | null> {
   const supabase = await createClient();
   const { data } = await supabase.auth.getUser();
 

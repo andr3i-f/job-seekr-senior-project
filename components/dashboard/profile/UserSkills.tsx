@@ -21,8 +21,7 @@ function areListsEqual(list1: string[], list2: string[]): boolean {
   const set1 = new Set(list1);
   const set2 = new Set(list2);
 
-  for (const item in set1) {
-    console.log(item);
+  for (const item of set1) {
     if (!set2.has(item)) {
       return false;
     }
@@ -123,11 +122,7 @@ export default function UserSkills({ skills }: { skills: string | null }) {
       const newSkills = prevSkills.filter(
         (_, skillIndex) => skillIndex !== index,
       );
-
-      if (!modified) {
-        setModified(!areListsEqual(newSkills, previousSkills));
-      }
-
+      setModified(!areListsEqual(newSkills, previousSkills));
       return newSkills;
     });
   };
@@ -135,25 +130,25 @@ export default function UserSkills({ skills }: { skills: string | null }) {
   const onAddSkill = (skill: string) => {
     setUserSkills((prevSkills) => {
       const newSkills = [...prevSkills, skill];
-
-      if (!modified) {
-        setModified(!areListsEqual(newSkills, previousSkills));
-      }
-
+      setModified(!areListsEqual(newSkills, previousSkills));
       return newSkills;
     });
   };
 
   const onUpdate = () => {
-    setPreviousUserSkills(userSkills);
     setLoading(true);
     axios
-      .put("/api/dashboard/profile/skills", { skills: userSkills.join(",") })
+      .put("/api/dashboard/profile/skills", {
+        skills: userSkills.length > 0 ? userSkills.join(",") : null,
+      })
+      .then(() => {
+        setPreviousUserSkills(userSkills);
+        setModified(false);
+      })
       .catch((_) => console.error("Error trying to update skills!"))
       .finally(() => {
         setLoading(false);
       });
-    setModified(false);
   };
 
   const onReset = () => {

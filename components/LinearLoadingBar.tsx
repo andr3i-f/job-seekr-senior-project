@@ -9,6 +9,8 @@ export default function LinearLoadingBar({
 }) {
   return (
     <Stack
+      justifySelf={"center"}
+      alignSelf={"center"}
       direction={"column"}
       justifyContent={"center"}
       alignItems={"center"}

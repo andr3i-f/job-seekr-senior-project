@@ -1,7 +1,7 @@
-import { Stack, Switch, Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
 
-export default function UserSettings({ settings }: { settings: UserSettings }) {
+export default function RecentJobs() {
   return (
     <Stack
       direction={"column"}
@@ -9,7 +9,7 @@ export default function UserSettings({ settings }: { settings: UserSettings }) {
         border: `2px solid ${deepPurple[300]}`,
         borderRadius: 5,
         height: "40%",
-        width: "30%",
+        width: "37%",
         pl: 2,
       }}
     >
@@ -19,7 +19,7 @@ export default function UserSettings({ settings }: { settings: UserSettings }) {
         color={deepPurple[100]}
         mt={1}
       >
-        Preferences
+        Recent Jobs Found
       </Typography>
     </Stack>
   );

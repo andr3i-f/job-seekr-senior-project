@@ -1,5 +1,6 @@
 "use client";
 
+import RecentJobs from "@/components/dashboard/jobs/RecentJobs";
 import ExperienceLevel from "@/components/dashboard/profile/ExperienceLevel";
 import UserSkills from "@/components/dashboard/profile/UserSkills";
 import UserSettings from "@/components/dashboard/settings/UserSettings";
@@ -55,26 +56,30 @@ export default function DashboardPage() {
             Welcome {user?.user_metadata?.full_name}!
           </Typography>
         )}
-        <Stack
-          direction={"row"}
-          height={"100%"}
-          width={"100%"}
-          justifyContent={"start"}
-        >
-          <Stack direction={"column"} width={"27%"} pr={5}>
-            {user && dashboardData && !loadingDashboard && (
-              <UserSkills skills={dashboardData.profile.skills} />
+        {!loadingDashboard && (
+          <Stack
+            direction={"row"}
+            height={"100%"}
+            width={"100%"}
+            justifyContent={"start"}
+            spacing={2}
+          >
+            <Stack direction={"column"} width={"27%"} pr={3}>
+              {user && dashboardData && (
+                <UserSkills skills={dashboardData.profile.skills} />
+              )}
+              {user && dashboardData && (
+                <ExperienceLevel
+                  experienceLevel={dashboardData.profile.experience_level}
+                />
+              )}
+            </Stack>
+            {user && dashboardData && (
+              <UserSettings settings={dashboardData.settings} />
             )}
-            {user && dashboardData && !loadingDashboard && (
-              <ExperienceLevel
-                experienceLevel={dashboardData.profile.experience_level}
-              />
-            )}
+            {user && dashboardData && !loadingDashboard && <RecentJobs />}
           </Stack>
-          {user && dashboardData && !loadingDashboard && (
-            <UserSettings settings={dashboardData.settings} />
-          )}
-        </Stack>
+        )}
       </Stack>
     </Box>
   );

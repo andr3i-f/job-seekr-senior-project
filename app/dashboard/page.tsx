@@ -1,5 +1,6 @@
 "use client";
 
+import ExperienceLevel from "@/components/dashboard/profile/ExperienceLevel";
 import UserSkills from "@/components/dashboard/profile/UserSkills";
 import LinearLoadingBar from "@/components/LinearLoadingBar";
 import { useUser } from "@/components/providers/UserProvider";
@@ -55,6 +56,11 @@ export default function DashboardPage() {
         )}
         {user && dashboardData && !loadingDashboard && (
           <UserSkills skills={dashboardData.profile.skills} />
+        )}
+        {user && dashboardData && !loadingDashboard && (
+          <ExperienceLevel
+            experienceLevel={dashboardData.profile.experience_level}
+          />
         )}
       </Stack>
     </Box>

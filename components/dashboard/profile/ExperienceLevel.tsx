@@ -1,14 +1,7 @@
 "use client";
 
 import { Check, Restore } from "@mui/icons-material";
-import {
-  IconButton,
-  Menu,
-  MenuItem,
-  Select,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { IconButton, MenuItem, Select, Stack, Typography } from "@mui/material";
 import { deepPurple, red } from "@mui/material/colors";
 import axios from "axios";
 import { useState } from "react";
@@ -36,7 +29,7 @@ export default function ExperienceLevel({
         setPreviousUserExperienceLevel(userExperienceLevel);
         setModified(false);
       })
-      .catch((_) => console.error("Error trying to update skills!"))
+      .catch((_) => console.error("Error trying to update experienceLevel!"))
       .finally(() => {
         setLoading(false);
       });
@@ -54,7 +47,7 @@ export default function ExperienceLevel({
         border: `2px solid ${deepPurple[300]}`,
         borderRadius: 5,
         height: "fit-content",
-        width: "25%",
+        width: "100%",
         px: 3,
         pb: 2,
         ml: 3,

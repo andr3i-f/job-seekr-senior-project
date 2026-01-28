@@ -163,7 +163,7 @@ export default function UserSkills({ skills }: { skills: string | null }) {
         border: `2px solid ${deepPurple[300]}`,
         borderRadius: 5,
         height: "fit-content",
-        width: "25%",
+        width: "100%",
         px: 3,
         pb: 2,
         ml: 3,

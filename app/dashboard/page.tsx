@@ -2,6 +2,7 @@
 
 import ExperienceLevel from "@/components/dashboard/profile/ExperienceLevel";
 import UserSkills from "@/components/dashboard/profile/UserSkills";
+import UserSettings from "@/components/dashboard/settings/UserSettings";
 import LinearLoadingBar from "@/components/LinearLoadingBar";
 import { useUser } from "@/components/providers/UserProvider";
 import { NAVBAR_HEIGHT_IN_VH } from "@/constants/layout";
@@ -54,14 +55,26 @@ export default function DashboardPage() {
             Welcome {user?.user_metadata?.full_name}!
           </Typography>
         )}
-        {user && dashboardData && !loadingDashboard && (
-          <UserSkills skills={dashboardData.profile.skills} />
-        )}
-        {user && dashboardData && !loadingDashboard && (
-          <ExperienceLevel
-            experienceLevel={dashboardData.profile.experience_level}
-          />
-        )}
+        <Stack
+          direction={"row"}
+          height={"100%"}
+          width={"100%"}
+          justifyContent={"start"}
+        >
+          <Stack direction={"column"} width={"27%"} pr={5}>
+            {user && dashboardData && !loadingDashboard && (
+              <UserSkills skills={dashboardData.profile.skills} />
+            )}
+            {user && dashboardData && !loadingDashboard && (
+              <ExperienceLevel
+                experienceLevel={dashboardData.profile.experience_level}
+              />
+            )}
+          </Stack>
+          {user && dashboardData && !loadingDashboard && (
+            <UserSettings settings={dashboardData.settings} />
+          )}
+        </Stack>
       </Stack>
     </Box>
   );

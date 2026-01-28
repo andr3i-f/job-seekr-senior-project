@@ -12,9 +12,9 @@ export default function DashboardPage() {
   const user = useUser();
 
   const [loadingDashboard, setLoadingDashboard] = useState(false);
-  const [dashboardData, setDashboardData] = useState<undefined | any>(
-    undefined,
-  );
+  const [dashboardData, setDashboardData] = useState<
+    DashboardResponse | undefined
+  >(undefined);
 
   useEffect(() => {
     setLoadingDashboard(true);
@@ -22,7 +22,7 @@ export default function DashboardPage() {
     axios
       .get("/api/dashboard")
       .then((response) => {
-        setDashboardData(response.data);
+        setDashboardData(response.data as DashboardResponse);
       })
       .catch((_) => {
         console.error("Error trying to get dashboard information!");

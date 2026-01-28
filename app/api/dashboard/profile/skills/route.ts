@@ -11,6 +11,13 @@ export async function PUT(req: Request) {
     );
   }
 
+  if (body["skills"] !== null && typeof body["skills"] !== "string") {
+    return NextResponse.json(
+      { error: "'skills' is incorrect type!" },
+      { status: 400 },
+    );
+  }
+
   const supabase = await createClient();
   const {
     data: { user },

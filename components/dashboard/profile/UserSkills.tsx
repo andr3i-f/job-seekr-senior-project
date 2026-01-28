@@ -1,8 +1,6 @@
 "use client";
 
 import {
-  Box,
-  Button,
   Chip,
   Grid,
   IconButton,
@@ -11,8 +9,27 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
-import { deepPurple } from "@mui/material/colors";
-import { Add, Input } from "@mui/icons-material";
+import { deepPurple, red } from "@mui/material/colors";
+import { Add, Check, Restore } from "@mui/icons-material";
+import axios from "axios";
+
+function areListsEqual(list1: string[], list2: string[]): boolean {
+  if (list1.length !== list2.length) {
+    return false;
+  }
+
+  const set1 = new Set(list1);
+  const set2 = new Set(list2);
+
+  for (const item in set1) {
+    console.log(item);
+    if (!set2.has(item)) {
+      return false;
+    }
+  }
+
+  return true;
+}
 
 function SkillChip({
   skill,
@@ -37,7 +54,13 @@ function SkillChip({
   );
 }
 
-function AddNewSkill({ onAddSkill }: { onAddSkill: (arg0: string) => void }) {
+function AddNewSkill({
+  onAddSkill,
+  disabled,
+}: {
+  onAddSkill: (arg0: string) => void;
+  disabled: boolean;
+}) {
   const [skill, setSkill] = useState("");
 
   return (
@@ -68,16 +91,17 @@ function AddNewSkill({ onAddSkill }: { onAddSkill: (arg0: string) => void }) {
             },
           },
           "& .MuiOutlinedInput-input": {
-            color: "white", // input text color
+            color: "white",
           },
         }}
       />
       <IconButton
         sx={{ color: deepPurple[300] }}
         onClick={() => {
-          onAddSkill(skill);
+          onAddSkill(skill.replaceAll(",", ""));
           setSkill("");
         }}
+        disabled={disabled}
       >
         <Add />
       </IconButton>
@@ -89,21 +113,53 @@ export default function UserSkills({ skills }: { skills: string | null }) {
   const [userSkills, setUserSkills] = useState<string[]>(
     skills === null ? [] : skills.split(","),
   );
+  const [previousSkills, setPreviousUserSkills] =
+    useState<string[]>(userSkills);
   const [modified, setModified] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const onDelete = (index: number) => {
-    setUserSkills((prevSkills) =>
-      prevSkills.filter((_, skillIndex) => skillIndex !== index),
-    );
+    setUserSkills((prevSkills) => {
+      const newSkills = prevSkills.filter(
+        (_, skillIndex) => skillIndex !== index,
+      );
+
+      if (!modified) {
+        setModified(!areListsEqual(newSkills, previousSkills));
+      }
+
+      return newSkills;
+    });
   };
 
   const onAddSkill = (skill: string) => {
-    setUserSkills((prevSkills) => [...prevSkills, skill]);
+    setUserSkills((prevSkills) => {
+      const newSkills = [...prevSkills, skill];
+
+      if (!modified) {
+        setModified(!areListsEqual(newSkills, previousSkills));
+      }
+
+      return newSkills;
+    });
   };
 
-  // if modified, show button to approve or cancel changes
-  // if not modified, don't show anything
-  // this component should split the user settings by "," and map them
+  const onUpdate = () => {
+    setPreviousUserSkills(userSkills);
+    setLoading(true);
+    axios
+      .put("/api/dashboard/profile/skills", { skills: userSkills.join(",") })
+      .catch((_) => console.error("Error trying to update skills!"))
+      .finally(() => {
+        setLoading(false);
+      });
+    setModified(false);
+  };
+
+  const onReset = () => {
+    setUserSkills(previousSkills);
+    setModified(false);
+  };
 
   return (
     <Stack
@@ -133,9 +189,27 @@ export default function UserSkills({ skills }: { skills: string | null }) {
           </Grid>
         ))}
       </Grid>
-      {/* <Box  sx={{ border: "1px solid red", height: "100%" }}/> */}
-      <Stack direction={"row"}>
-        <AddNewSkill onAddSkill={onAddSkill} />
+      <Stack direction={"row"} spacing={1}>
+        <AddNewSkill onAddSkill={onAddSkill} disabled={loading} />
+        {modified && (
+          <IconButton
+            onClick={onUpdate}
+            disabled={loading}
+            loadingIndicator={loading}
+            sx={{ color: "green" }}
+          >
+            <Check />
+          </IconButton>
+        )}
+        {modified && (
+          <IconButton
+            onClick={onReset}
+            disabled={loading}
+            sx={{ color: red[300] }}
+          >
+            <Restore />
+          </IconButton>
+        )}
       </Stack>
     </Stack>
   );

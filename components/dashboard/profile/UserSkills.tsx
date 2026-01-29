@@ -166,7 +166,6 @@ export default function UserSkills({ skills }: { skills: string | null }) {
         width: "100%",
         px: 3,
         pb: 2,
-        ml: 3,
       }}
     >
       <Typography

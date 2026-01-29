@@ -50,8 +50,7 @@ export default function ExperienceLevel({
         width: "100%",
         px: 3,
         pb: 2,
-        ml: 3,
-        mt: 3,
+        mt: 2,
       }}
     >
       <Typography

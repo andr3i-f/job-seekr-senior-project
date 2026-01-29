@@ -1,9 +1,11 @@
 "use client";
 
 import RecentJobs from "@/components/dashboard/jobs/RecentJobs";
+import Statistics from "@/components/dashboard/jobs/Statistics";
 import ExperienceLevel from "@/components/dashboard/profile/ExperienceLevel";
 import UserSkills from "@/components/dashboard/profile/UserSkills";
-import UserSettings from "@/components/dashboard/settings/UserSettings";
+import GeneralSettings from "@/components/dashboard/settings/GeneralSettings";
+import UserPreferences from "@/components/dashboard/settings/UserPreferences";
 import LinearLoadingBar from "@/components/LinearLoadingBar";
 import { useUser } from "@/components/providers/UserProvider";
 import { NAVBAR_HEIGHT_IN_VH } from "@/constants/layout";
@@ -35,6 +37,8 @@ export default function DashboardPage() {
       });
   }, []);
 
+  const showDashboard = user && dashboardData && !loadingDashboard;
+
   return (
     <Box
       sx={{
@@ -47,39 +51,54 @@ export default function DashboardPage() {
         justifyContent={"start"}
         alignItems={"start"}
         height={"100%"}
+        pt={2}
+        px={2}
       >
-        {loadingDashboard && (
+        {!showDashboard && (
           <LinearLoadingBar text={"loading user info. . ."} />
         )}
-        {user && dashboardData && !loadingDashboard && (
-          <Typography fontWeight={"bold"} variant="h5" sx={{ mt: 2, ml: 2 }}>
+        {showDashboard && (
+          <Typography fontWeight={"bold"} variant="h5">
             Welcome {user?.user_metadata?.full_name}!
           </Typography>
         )}
-        {!loadingDashboard && (
+        {showDashboard && (
           <Stack
             direction={"row"}
-            height={"100%"}
+            height={"fit-content"}
+            minHeight={"40%"}
             width={"100%"}
             justifyContent={"start"}
+            pb={2}
             spacing={2}
           >
-            <Stack direction={"column"} width={"27%"} pr={3}>
-              {user && dashboardData && (
+            <Stack direction={"column"} width={"27%"}>
+              {showDashboard && (
                 <UserSkills skills={dashboardData.profile.skills} />
               )}
-              {user && dashboardData && (
+              {showDashboard && (
                 <ExperienceLevel
                   experienceLevel={dashboardData.profile.experience_level}
                 />
               )}
             </Stack>
-            {user && dashboardData && (
-              <UserSettings settings={dashboardData.settings} />
+            {showDashboard && (
+              <UserPreferences settings={dashboardData.settings} />
             )}
-            {user && dashboardData && !loadingDashboard && <RecentJobs />}
+            {showDashboard && !loadingDashboard && <RecentJobs />}
           </Stack>
         )}
+        {showDashboard && <Stack
+          direction={"row"}
+          height={"50%"}
+          width={"100%"}
+          justifyContent={"start"}
+          pb={2}
+          spacing={2}
+        >
+          {showDashboard && <Statistics />}
+          {showDashboard && <GeneralSettings/>}
+        </Stack>}
       </Stack>
     </Box>
   );

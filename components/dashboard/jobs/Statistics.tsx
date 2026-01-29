@@ -1,7 +1,7 @@
 import { Stack, Typography } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
 
-export default function RecentJobs() {
+export default function Statistics() {
   return (
     <Stack
       direction={"column"}
@@ -19,7 +19,7 @@ export default function RecentJobs() {
         color={deepPurple[100]}
         mt={1}
       >
-        Recent Jobs Found
+        Statistics
       </Typography>
     </Stack>
   );

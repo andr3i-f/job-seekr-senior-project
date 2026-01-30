@@ -10,7 +10,7 @@ export default function DashboardPage() {
       sx={{
         width: "100vw",
         height: `${100 - NAVBAR_HEIGHT_IN_VH}vh`,
-        p: 2,
+        p: 4,
       }}
     >
       <Dashboard />

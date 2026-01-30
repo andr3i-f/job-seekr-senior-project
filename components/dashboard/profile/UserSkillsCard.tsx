@@ -158,7 +158,7 @@ export default function UserSkillsCard({ skills }: { skills: string | null }) {
 
   return (
     <React.Fragment>
-      <CardContent>
+      <CardContent sx={{ flexGrow: 1 }}>
         <Typography variant="h5" fontWeight={"bold"} color={deepPurple[100]}>
           Skills
         </Typography>

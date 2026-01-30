@@ -1,13 +1,7 @@
-import {
-  Box,
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  Grid,
-  Typography,
-} from "@mui/material";
-import React from "react";
+"use client";
+
+import { Grid } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import GenericDashboardCard from "./GenericDashboardCard";
 import UserSkillsCard from "./profile/UserSkillsCard";
 import RecentJobsCard from "./jobs/RecentJobsCard";
@@ -15,66 +9,73 @@ import UserPreferencesCard from "./settings/UserPreferencesCard";
 import StatisticsCard from "./jobs/StatisticsCard";
 import GeneralSettingsCard from "./settings/GeneralSettingsCard";
 import OldMemeOrCatCard from "./meme/OldMemeOrCatCard";
-
-const bull = (
-  <Box
-    component="span"
-    sx={{ display: "inline-block", mx: "2px", transform: "scale(0.8)" }}
-  >
-    •
-  </Box>
-);
-
-const card = (
-  <React.Fragment>
-    <CardContent>
-      <Typography>hello</Typography>
-    </CardContent>
-  </React.Fragment>
-);
+import { useUser } from "../providers/UserProvider";
+import axios from "axios";
+import LinearLoadingBar from "../LinearLoadingBar";
 
 export default function Dashboard() {
+  const user = useUser();
+
+  const [loadingDashboard, setLoadingDashboard] = useState(false);
+  const [dashboardData, setDashboardData] = useState<
+    DashboardResponse | undefined
+  >(undefined);
+
+  useEffect(() => {
+    setLoadingDashboard(true);
+
+    axios
+      .get("/api/dashboard")
+      .then((response) => {
+        setDashboardData(response.data as DashboardResponse);
+      })
+      .catch((_) => {
+        console.error("Error trying to get dashboard information!");
+      })
+      .finally(() => {
+        setLoadingDashboard(false);
+      });
+  }, []);
+
+  const showDashboard = user && !loadingDashboard && dashboardData;
+
   return (
-    <Grid container spacing={2} columns={16}>
-      <Grid size={9}>
-        <GenericDashboardCard>
-          <RecentJobsCard />
-        </GenericDashboardCard>
-      </Grid>
-      <Grid size={7}>
-        <GenericDashboardCard>
-          <StatisticsCard />
-        </GenericDashboardCard>
-      </Grid>
-      <Grid size={4}>
-        <GenericDashboardCard>
-          <UserSkillsCard skills={null} />
-        </GenericDashboardCard>
-      </Grid>
-      <Grid size={4}>
-        <GenericDashboardCard>
-          <UserPreferencesCard />
-        </GenericDashboardCard>
-      </Grid>
-      <Grid size={4}>
-        <GenericDashboardCard>
-          <GeneralSettingsCard />
-        </GenericDashboardCard>
-      </Grid>
-      <Grid size={4}>
-        <GenericDashboardCard>
-          <OldMemeOrCatCard />
-        </GenericDashboardCard>
-      </Grid>
-      {/* <Grid size={8} border={"2px solid green"}>
-                <Card variant="outlined">{card}</Card>
-            </Grid>
-                            <Grid size={8}>
-                <Card variant={"elevation"}>{card}</Card>
-            </Grid>
-                            <Grid size={8}>
-                <Card variant="outlined">{card}</Card>
-            </Grid> */}
-    </Grid>
+    <React.Fragment>
+      {!showDashboard && <LinearLoadingBar text={"loading user info. . ."} />}
+      {showDashboard && (
+        <Grid container spacing={2} columns={16} height={"100%"}>
+          <Grid size={9}>
+            <GenericDashboardCard>
+              <RecentJobsCard />
+            </GenericDashboardCard>
+          </Grid>
+          <Grid size={7}>
+            <GenericDashboardCard>
+              <StatisticsCard />
+            </GenericDashboardCard>
+          </Grid>
+          <Grid size={4}>
+            <GenericDashboardCard>
+              <UserSkillsCard skills={dashboardData.profile.skills} />
+            </GenericDashboardCard>
+          </Grid>
+          <Grid size={4}>
+            <GenericDashboardCard>
+              <UserPreferencesCard />
+            </GenericDashboardCard>
+          </Grid>
+          <Grid size={4}>
+            <GenericDashboardCard>
+              <GeneralSettingsCard />
+            </GenericDashboardCard>
+          </Grid>
+          <Grid size={4}>
+            <GenericDashboardCard>
+              <OldMemeOrCatCard />
+            </GenericDashboardCard>
+          </Grid>
+        </Grid>
+      )}
+    </React.Fragment>
   );
 }

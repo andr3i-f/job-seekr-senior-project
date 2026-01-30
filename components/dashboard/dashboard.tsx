@@ -44,35 +44,39 @@ export default function Dashboard() {
       {!showDashboard && <LinearLoadingBar text={"loading user info. . ."} />}
       {showDashboard && (
         <Grid container spacing={2} columns={16} height={"100%"}>
-          <Grid size={9}>
-            <GenericDashboardCard>
-              <RecentJobsCard />
-            </GenericDashboardCard>
+          <Grid container size={16} spacing={2} sx={{ height: "50%" }}>
+            <Grid size={9}>
+              <GenericDashboardCard>
+                <RecentJobsCard />
+              </GenericDashboardCard>
+            </Grid>
+            <Grid size={7}>
+              <GenericDashboardCard>
+                <StatisticsCard />
+              </GenericDashboardCard>
+            </Grid>
           </Grid>
-          <Grid size={7}>
-            <GenericDashboardCard>
-              <StatisticsCard />
-            </GenericDashboardCard>
-          </Grid>
-          <Grid size={4}>
-            <GenericDashboardCard>
-              <UserSkillsCard skills={dashboardData.profile.skills} />
-            </GenericDashboardCard>
-          </Grid>
-          <Grid size={4}>
-            <GenericDashboardCard>
-              <UserPreferencesCard />
-            </GenericDashboardCard>
-          </Grid>
-          <Grid size={4}>
-            <GenericDashboardCard>
-              <GeneralSettingsCard />
-            </GenericDashboardCard>
-          </Grid>
-          <Grid size={4}>
-            <GenericDashboardCard>
-              <OldMemeOrCatCard />
-            </GenericDashboardCard>
+          <Grid container size={16} spacing={2} sx={{ height: "50%" }}>
+            <Grid size={4}>
+              <GenericDashboardCard>
+                <UserSkillsCard skills={dashboardData.profile.skills} />
+              </GenericDashboardCard>
+            </Grid>
+            <Grid size={4}>
+              <GenericDashboardCard>
+                <UserPreferencesCard />
+              </GenericDashboardCard>
+            </Grid>
+            <Grid size={4}>
+              <GenericDashboardCard>
+                <GeneralSettingsCard />
+              </GenericDashboardCard>
+            </Grid>
+            <Grid size={4}>
+              <GenericDashboardCard>
+                <OldMemeOrCatCard />
+              </GenericDashboardCard>
+            </Grid>
           </Grid>
         </Grid>
       )}

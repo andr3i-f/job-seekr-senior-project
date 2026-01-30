@@ -14,8 +14,10 @@ export default function GenericDashboardCard({
         border: `2px solid ${deepPurple[300]}`,
         borderRadius: 4,
         height: "100%",
+        maxHeight: "100%",
         display: "flex",
         flexDirection: "column",
+        overflow: "auto",
       }}
     >
       {children}

@@ -54,9 +54,7 @@ export default function DashboardPage() {
         pt={2}
         px={2}
       >
-        {!showDashboard && (
-          <LinearLoadingBar text={"loading user info. . ."} />
-        )}
+        {!showDashboard && <LinearLoadingBar text={"loading user info. . ."} />}
         {showDashboard && (
           <Typography fontWeight={"bold"} variant="h5">
             Welcome {user?.user_metadata?.full_name}!
@@ -88,17 +86,19 @@ export default function DashboardPage() {
             {showDashboard && !loadingDashboard && <RecentJobs />}
           </Stack>
         )}
-        {showDashboard && <Stack
-          direction={"row"}
-          height={"50%"}
-          width={"100%"}
-          justifyContent={"start"}
-          pb={2}
-          spacing={2}
-        >
-          {showDashboard && <Statistics />}
-          {showDashboard && <GeneralSettings/>}
-        </Stack>}
+        {showDashboard && (
+          <Stack
+            direction={"row"}
+            height={"50%"}
+            width={"100%"}
+            justifyContent={"start"}
+            pb={2}
+            spacing={2}
+          >
+            {showDashboard && <Statistics />}
+            {showDashboard && <GeneralSettings />}
+          </Stack>
+        )}
       </Stack>
     </Box>
   );

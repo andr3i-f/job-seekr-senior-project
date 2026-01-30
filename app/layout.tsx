@@ -21,8 +21,8 @@ export const metadata: Metadata = {
   description: "Job locating service",
   icons: {
     icon: "/favicon.ico",
-    apple: "/apple.png" 
-  }
+    apple: "/apple.png",
+  },
 };
 
 export default async function RootLayout({

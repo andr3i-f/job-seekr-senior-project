@@ -13,3 +13,13 @@ interface DashboardResponse {
   profile: UserProfile;
   settings: UserSettings;
 }
+
+interface Job {
+  title: string;
+  source: string;
+  company_name: string;
+  experience_level: string;
+  url: string;
+  salary: number;
+  location: string;
+}

@@ -1,9 +1,11 @@
 import { Refresh } from "@mui/icons-material";
 import {
+  Box,
   CardActions,
   CardContent,
   CardMedia,
   IconButton,
+  Skeleton,
   Typography,
 } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
@@ -11,6 +13,25 @@ import React, { useState } from "react";
 
 export default function CuteAnimalsCard() {
   const [currentImage, setCurrentImage] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const showRandomImage = () => {
+    setCurrentImage(animals[Math.floor(Math.random() * animals.length)]);
+  };
+
+  const randomDelay = () => Math.random() * (800 - 300) + 300;
+
+  const onRefresh = async () => {
+    setLoading(true);
+
+    await new Promise((resolve) => {
+      setTimeout(resolve, randomDelay());
+    });
+
+    showRandomImage();
+
+    setLoading(false);
+  };
 
   const animals = [
     "/cats/apple-cat.webp",
@@ -27,38 +48,61 @@ export default function CuteAnimalsCard() {
     "/cats/sleepy-cat2.webp",
   ];
 
-  const showRandomImage = () => {
-    setCurrentImage(animals[Math.floor(Math.random() * animals.length)]);
-  };
-
   return (
     <React.Fragment>
-      <CardContent sx={{ flexGrow: 1, overflow: "hidden" }}>
+      <CardContent
+        sx={{
+          flexGrow: 1,
+          overflow: "hidden",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
         <Typography
           variant="h5"
           fontWeight={"bold"}
           color={deepPurple[100]}
           mt={1}
         >
-          old meme or cute cat :3
+          cute cat :3
         </Typography>
-        {currentImage && (
-          <CardMedia
-            component="img"
-            image={currentImage}
-            alt="fun"
+        {currentImage && !loading && (
+          <Box
             sx={{
-              width: "100%",
-              aspectRatio: "16 / 9",
-              objectFit: "contain",
-              backgroundColor: "rgba(0,0,0,0.1)",
-              mt: 2,
+              flexGrow: 1,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              overflow: "hidden",
             }}
+          >
+            <CardMedia
+              component="img"
+              image={currentImage}
+              alt="fun"
+              sx={{
+                width: "100%",
+                aspectRatio: "16 / 9",
+                objectFit: "cover",
+                backgroundColor: "rgba(0,0,0,0.1)",
+                transition: "transform 0.3s ease",
+                "&:hover": { transform: "scale(1.2)" },
+                borderRadius: 2,
+              }}
+            />
+          </Box>
+        )}
+        {loading && (
+          <Skeleton
+            variant="rounded"
+            width="100%"
+            height="80%"
+            sx={{ aspectRatio: "16 / 9", borderRadius: 2 }}
           />
         )}
       </CardContent>
       <CardActions>
-        <IconButton sx={{ color: deepPurple[100] }} onClick={showRandomImage}>
+        <IconButton sx={{ color: deepPurple[100] }} onClick={onRefresh}>
           <Refresh />
         </IconButton>
       </CardActions>

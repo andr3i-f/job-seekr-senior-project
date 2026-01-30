@@ -44,28 +44,18 @@ export default function ExperienceLevel({
     <Stack
       direction={"column"}
       sx={{
-        border: `2px solid ${deepPurple[300]}`,
-        borderRadius: 5,
         height: "fit-content",
         width: "100%",
-        px: 3,
-        pb: 2,
-        mt: 2,
       }}
     >
-      <Typography
-        variant="h5"
-        fontWeight={"bold"}
-        color={deepPurple[100]}
-        mt={1}
-      >
+      <Typography variant="h6" color={deepPurple[100]} mt={1}>
         Experience Level
       </Typography>
       <Stack direction={"row"} spacing={1} width={"100%"} sx={{ mt: 1 }}>
         <Select
           disabled={loading}
           sx={{
-            width: "100%",
+            width: "55%",
             color: "white",
             "& .MuiOutlinedInput-notchedOutline": {
               borderColor: deepPurple[200],

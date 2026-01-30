@@ -64,7 +64,9 @@ export default function Dashboard() {
             </Grid>
             <Grid size={4}>
               <GenericDashboardCard>
-                <UserPreferencesCard />
+                <UserPreferencesCard
+                  experienceLevel={dashboardData.profile.experience_level}
+                />
               </GenericDashboardCard>
             </Grid>
             <Grid size={4}>

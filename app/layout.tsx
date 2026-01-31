@@ -36,7 +36,7 @@ export default async function RootLayout({
     <html lang="en">
       <body>
         <UserProvider value={user}>
-          <Box sx={{ background: "linear-gradient(180deg, #2C1D68, #5638ce)" }}>
+          <Box sx={{ background: "linear-gradient(180deg, #2C1D68, #5638CE)" }}>
             <NavBar />
             {children}
           </Box>

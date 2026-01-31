@@ -15,9 +15,9 @@ export default function LinearLoadingBar({
       justifyContent={"center"}
       alignItems={"center"}
       height={"100%"}
-      width={width}
+      width={"100%"}
     >
-      <LinearProgress color="inherit" sx={{ width: "100%", mb: "10px" }} />
+      <LinearProgress color="inherit" sx={{ width: width, mb: "10px" }} />
       <Typography sx={{ opacity: 0.5 }} fontSize={"small"} color="white">
         {text}
       </Typography>

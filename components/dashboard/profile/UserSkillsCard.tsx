@@ -1,6 +1,7 @@
-"use client";
-
+import { Add, Check, Restore } from "@mui/icons-material";
 import {
+  CardActions,
+  CardContent,
   Chip,
   Grid,
   IconButton,
@@ -8,10 +9,9 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
 import { deepPurple, red } from "@mui/material/colors";
-import { Add, Check, Restore } from "@mui/icons-material";
 import axios from "axios";
+import React, { useState } from "react";
 
 function areListsEqual(list1: string[], list2: string[]): boolean {
   if (list1.length !== list2.length) {
@@ -108,7 +108,7 @@ function AddNewSkill({
   );
 }
 
-export default function UserSkills({ skills }: { skills: string | null }) {
+export default function UserSkillsCard({ skills }: { skills: string | null }) {
   const [userSkills, setUserSkills] = useState<string[]>(
     skills === null ? [] : skills.split(","),
   );
@@ -157,40 +157,25 @@ export default function UserSkills({ skills }: { skills: string | null }) {
   };
 
   return (
-    <Stack
-      direction={"column"}
-      sx={{
-        border: `2px solid ${deepPurple[300]}`,
-        borderRadius: 5,
-        height: "fit-content",
-        width: "25%",
-        px: 3,
-        pb: 2,
-        ml: 3,
-      }}
-    >
-      <Typography
-        variant="h5"
-        fontWeight={"bold"}
-        color={deepPurple[100]}
-        mt={1}
-      >
-        Skills
-      </Typography>
-      <Grid container spacing={1} mb={2}>
-        {userSkills.map((skill, index) => (
-          <Grid size={{ xs: 3, xl: 2 }} key={`${skill}-${index}`}>
-            <SkillChip skill={skill} index={index} onDelete={onDelete} />
-          </Grid>
-        ))}
-      </Grid>
-      <Stack direction={"row"} spacing={1}>
+    <React.Fragment>
+      <CardContent sx={{ flexGrow: 1 }}>
+        <Typography variant="h5" fontWeight={"bold"} color={deepPurple[100]}>
+          Skills
+        </Typography>
+        <Grid container spacing={1} mb={2}>
+          {userSkills.map((skill, index) => (
+            <Grid size={{ xs: 3, xl: 2 }} key={`${skill}-${index}`}>
+              <SkillChip skill={skill} index={index} onDelete={onDelete} />
+            </Grid>
+          ))}
+        </Grid>
+      </CardContent>
+      <CardActions>
         <AddNewSkill onAddSkill={onAddSkill} disabled={loading} />
         {modified && (
           <IconButton
             onClick={onUpdate}
             disabled={loading}
-            loadingIndicator={loading}
             sx={{ color: "green" }}
           >
             <Check />
@@ -205,7 +190,7 @@ export default function UserSkills({ skills }: { skills: string | null }) {
             <Restore />
           </IconButton>
         )}
-      </Stack>
-    </Stack>
+      </CardActions>
+    </React.Fragment>
   );
 }

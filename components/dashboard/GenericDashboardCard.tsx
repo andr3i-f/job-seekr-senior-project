@@ -1,4 +1,4 @@
-import { Card, CardContent, Typography } from "@mui/material";
+import { Card } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
 import React from "react";
 
@@ -18,6 +18,7 @@ export default function GenericDashboardCard({
         display: "flex",
         flexDirection: "column",
         overflow: "auto",
+        boxShadow: 3,
       }}
     >
       {children}

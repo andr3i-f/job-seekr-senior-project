@@ -12,6 +12,7 @@ import CuteAnimalsCard from "./cute-animals/CuteAnimalsCard";
 import { useUser } from "../providers/UserProvider";
 import axios from "axios";
 import LinearLoadingBar from "../LinearLoadingBar";
+import { DashboardResponse } from "@/constants/types";
 
 export default function Dashboard() {
   const user = useUser();

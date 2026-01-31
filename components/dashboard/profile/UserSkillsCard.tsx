@@ -176,7 +176,6 @@ export default function UserSkillsCard({ skills }: { skills: string | null }) {
           <IconButton
             onClick={onUpdate}
             disabled={loading}
-            loadingIndicator={loading}
             sx={{ color: "green" }}
           >
             <Check />

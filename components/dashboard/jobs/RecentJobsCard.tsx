@@ -1,6 +1,5 @@
 import { OpenInNew } from "@mui/icons-material";
 import {
-  Box,
   Card,
   CardContent,
   IconButton,
@@ -9,8 +8,9 @@ import {
 } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
 import React from "react";
+import { Job } from "@/constants/types";
 
-function Job({ job }: { job: Job }) {
+function JobCard({ job }: { job: Job }) {
   return (
     <Card
       sx={{
@@ -123,7 +123,7 @@ export default function RecentJobsCard() {
           }}
         >
           {dummyData.map((job) => (
-            <Job
+            <JobCard
               key={`${job.source}-${job.company_name}-${job.title}`}
               job={job}
             />

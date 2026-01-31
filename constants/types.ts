@@ -1,20 +1,20 @@
-interface UserProfile {
+export interface UserProfile {
   skills: string | null;
   experience_level: string | null;
 }
 
-interface UserSettings {
+export interface UserSettings {
   work_from_home: string | null;
   locations: string | null;
   start_ups: boolean | null;
 }
 
-interface DashboardResponse {
+export interface DashboardResponse {
   profile: UserProfile;
   settings: UserSettings;
 }
 
-interface Job {
+export interface Job {
   title: string;
   source: string;
   company_name: string;

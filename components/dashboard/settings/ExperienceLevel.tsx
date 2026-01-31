@@ -84,11 +84,7 @@ export default function ExperienceLevel({
             return selected;
           }}
           onChange={(e) => {
-            if (e.target.value !== userExperienceLevel) {
-              setModified(true);
-            } else {
-              setModified(false);
-            }
+            setModified(e.target.value !== previousUserExperienceLevel);
             setUserExperienceLevel(e.target.value);
           }}
         >
@@ -104,7 +100,6 @@ export default function ExperienceLevel({
           <IconButton
             onClick={onUpdate}
             disabled={loading}
-            loadingIndicator={loading}
             sx={{ color: "green" }}
           >
             <Check />

@@ -14,9 +14,9 @@ export async function PUT(req: Request) {
   const allowed_experience_levels = ["Intern", "Junior", "Mid-Level", "Senior"];
   if (
     body["experienceLevel"] !== null &&
-    typeof body["experienceLevel"] !== "string" &&
-    allowed_experience_levels.find((e) => e === body["experienceLevel"]) !==
-      undefined
+    (typeof body["experienceLevel"] !== "string" ||
+      allowed_experience_levels.find((e) => e === body["experienceLevel"]) !==
+        undefined)
   ) {
     return NextResponse.json(
       {
@@ -49,5 +49,5 @@ export async function PUT(req: Request) {
     );
   }
 
-  return NextResponse.json({ skills: data }, { status: 200 });
+  return NextResponse.json({ eperience_level: data }, { status: 200 });
 }

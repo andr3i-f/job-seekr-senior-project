@@ -19,7 +19,7 @@ The whole application consists of:
 2. Clone and set up the [backend repository](https://github.com/andr3i-f/job-seekr-finder-api)
 3. In the backend repository, run:
 
-```zsh
+```bash
 ~/dev/sp/job-seekr-finder-api main ❯ docker compose up -d --build                                                                                   08:55:32 PM
 Compose now can delegate build to bake for better performances
 Just set COMPOSE_BAKE=true
@@ -29,7 +29,7 @@ Just set COMPOSE_BAKE=true
 
 then enter the backend container
 
-```zsh
+```bash
 ~/dev/sp/job-seekr-finder-api main ❯ docker compose exec backend bash                                                                               08:55:36 PM
 
 root@19ef24410c42:/build#
@@ -37,7 +37,7 @@ root@19ef24410c42:/build#
 
 and run supervisord:
 
-```zsh
+```bash
 root@19ef24410c42:/build# supervisord -n
 ```
 
@@ -45,7 +45,7 @@ root@19ef24410c42:/build# supervisord -n
 5. Copy .env.example to .env
 6. run:
 
-```zsh
+```bash
 ~/dev/sp/job-seekr-senior-proj updating-readme !1 ❯ make buildRunDev                                                                                08:50:35 PM
 make buildDev
 docker build -t job-seekr-frontend -f ./.docker/development.dockerfile .
@@ -55,7 +55,7 @@ docker build -t job-seekr-frontend -f ./.docker/development.dockerfile .
 
 and start the server
 
-```zsh
+```bash
 root@de8d38c6cdda:/app# npm run dev
 
 > job-seekr-senior-proj@0.1.0 dev
@@ -66,6 +66,6 @@ root@de8d38c6cdda:/app# npm run dev
 
 In the container run:
 
-```zsh
+```bash
 npm run format
 ```

@@ -1,5 +1,6 @@
 import { OpenInNew } from "@mui/icons-material";
 import {
+  Box,
   Card,
   CardContent,
   IconButton,

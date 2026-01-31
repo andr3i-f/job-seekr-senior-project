@@ -15,8 +15,7 @@ export async function PUT(req: Request) {
   if (
     body["experienceLevel"] !== null &&
     (typeof body["experienceLevel"] !== "string" ||
-      allowed_experience_levels.find((e) => e === body["experienceLevel"]) !==
-        undefined)
+      !allowed_experience_levels.includes(body["experienceLevel"]))
   ) {
     return NextResponse.json(
       {

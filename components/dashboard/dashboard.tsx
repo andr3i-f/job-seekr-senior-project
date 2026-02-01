@@ -8,7 +8,7 @@ import RecentJobsCard from "./jobs/RecentJobsCard";
 import UserPreferencesCard from "./settings/UserPreferencesCard";
 import StatisticsCard from "./jobs/StatisticsCard";
 import GeneralSettingsCard from "./settings/GeneralSettingsCard";
-import CuteAnimalsCard from "./cute-animals/CuteAnimalsCard";
+import MemeCard from "./meme/MemeCard";
 import { useUser } from "../providers/UserProvider";
 import axios from "axios";
 import LinearLoadingBar from "../LinearLoadingBar";
@@ -77,7 +77,7 @@ export default function Dashboard() {
             </Grid>
             <Grid size={4}>
               <GenericDashboardCard>
-                <CuteAnimalsCard />
+                <MemeCard />
               </GenericDashboardCard>
             </Grid>
           </Grid>

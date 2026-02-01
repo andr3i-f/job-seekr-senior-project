@@ -11,7 +11,7 @@ import {
 import { deepPurple } from "@mui/material/colors";
 import React, { useState } from "react";
 
-export default function CuteAnimalsCard() {
+export default function MemeCard() {
   const [currentImage, setCurrentImage] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -24,18 +24,9 @@ export default function CuteAnimalsCard() {
     setCurrentImage(next);
   };
 
-  const randomDelay = () => Math.random() * (800 - 300) + 300;
-
   const onRefresh = async () => {
     setLoading(true);
-
-    await new Promise((resolve) => {
-      setTimeout(resolve, randomDelay());
-    });
-
     showRandomImage();
-
-    setLoading(false);
   };
 
   const animals = [
@@ -91,19 +82,28 @@ export default function CuteAnimalsCard() {
         >
           funny gif or cute cat :3
         </Typography>
-        {currentImage && !loading && (
-          <Box
-            sx={{
-              flexGrow: 1,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              overflow: "hidden",
-            }}
-          >
+        <Box
+          sx={{
+            flexGrow: 1,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            overflow: "hidden",
+          }}
+        >
+          {loading && (
+            <Skeleton
+              variant="rounded"
+              width="100%"
+              height="80%"
+              sx={{ aspectRatio: "16 / 9", borderRadius: 2 }}
+            />
+          )}
+          {currentImage && (
             <CardMedia
               component="img"
               image={currentImage}
+              onLoad={() => setLoading(false)}
               alt="fun"
               sx={{
                 width: "100%",
@@ -115,16 +115,8 @@ export default function CuteAnimalsCard() {
                 borderRadius: 2,
               }}
             />
-          </Box>
-        )}
-        {loading && (
-          <Skeleton
-            variant="rounded"
-            width="100%"
-            height="80%"
-            sx={{ aspectRatio: "16 / 9", borderRadius: 2 }}
-          />
-        )}
+          )}
+        </Box>
       </CardContent>
       <CardActions>
         <IconButton sx={{ color: deepPurple[100] }} onClick={onRefresh}>

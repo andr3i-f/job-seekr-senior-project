@@ -1,7 +1,6 @@
 import { Close } from "@mui/icons-material";
 import { Alert, AlertColor, IconButton, Snackbar } from "@mui/material";
-import React from "react";
-import { JSX } from "react";
+import React, { JSX } from "react";
 
 export default function CustomSnackbar({
   message,

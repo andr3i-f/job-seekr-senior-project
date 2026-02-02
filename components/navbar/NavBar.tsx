@@ -58,18 +58,24 @@ export default function NavBar(): JSX.Element {
                   size="medium"
                   onSuccess={async (credentialResponse) => {
                     try {
-                      await handleSignInWithGoogle(credentialResponse);
+                      await handleSignInWithGoogle(
+                        credentialResponse.credential,
+                      );
                       setSnackBarMessage("Successful sign-in with Google!");
                       setSnackBarOpen(true);
                       setSnackBarSeverity("success");
                     } catch (error) {
-                      setSnackBarMessage(`Google sign-in failed: ${error}`);
+                      setSnackBarMessage(
+                        `Google sign-in failed: ${error instanceof Error ? error.message : String(error)}`,
+                      );
                       setSnackBarOpen(true);
                       setSnackBarSeverity("error");
                     }
                   }}
                   onError={() => {
-                    console.log("Login Failed");
+                    setSnackBarMessage("Google sign-in failed");
+                    setSnackBarOpen(true);
+                    setSnackBarSeverity("error");
                   }}
                 />
               </div>

@@ -2,10 +2,9 @@
 
 import { createClient } from "@/lib/supabase/server";
 import type { User } from "@supabase/supabase-js";
-import { CredentialResponse } from "@react-oauth/google";
 
-export async function handleSignInWithGoogle(response: CredentialResponse) {
-  if (!response.credential) {
+export async function handleSignInWithGoogle(credential: string | undefined) {
+  if (credential === undefined) {
     throw new Error("Unable to retrieve credential from Google response.");
   }
 
@@ -13,7 +12,7 @@ export async function handleSignInWithGoogle(response: CredentialResponse) {
 
   const { error } = await supabase.auth.signInWithIdToken({
     provider: "google",
-    token: response.credential,
+    token: credential,
   });
 
   if (error) {

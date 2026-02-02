@@ -45,15 +45,17 @@ export default function NavBar(): JSX.Element {
         </Button>
         <Box sx={{ pr: 3 }}>
           {!user && (
-            <GoogleLogin
-              size="medium"
-              onSuccess={(credentialResponse) =>
-                handleSignInWithGoogle(credentialResponse)
-              }
-              onError={() => {
-                console.log("Login Failed");
-              }}
-            />
+            <div style={{ colorScheme: "light" }}>
+              <GoogleLogin
+                size="medium"
+                onSuccess={(credentialResponse) =>
+                  handleSignInWithGoogle(credentialResponse)
+                }
+                onError={() => {
+                  console.log("Login Failed");
+                }}
+              />
+            </div>
           )}
           {user && (
             <Button

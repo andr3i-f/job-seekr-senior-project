@@ -36,7 +36,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body>
-        <GoogleOAuthProvider clientId="804210602803-b2stb0611i3443i5cenjji597tc9dd3a.apps.googleusercontent.com">
+        <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_CLIENT_ID!}>
           <UserProvider value={user}>
             <Box
               sx={{ background: "linear-gradient(180deg, #2C1D68, #5638CE)" }}

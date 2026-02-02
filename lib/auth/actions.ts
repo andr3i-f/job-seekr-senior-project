@@ -1,28 +1,22 @@
 "use server";
 
-import { redirect } from "next/navigation";
-
 import { createClient } from "@/lib/supabase/server";
 import type { User } from "@supabase/supabase-js";
 
-export async function login() {
+export async function handleSignInWithGoogle(credential: string | undefined) {
+  if (credential === undefined) {
+    throw new Error("Unable to retrieve credential from Google response.");
+  }
+
   const supabase = await createClient();
 
-  // type-casting here for convenience
-  // in practice, you should validate your inputs
-  const { data, error } = await supabase.auth.signInWithOAuth({
+  const { error } = await supabase.auth.signInWithIdToken({
     provider: "google",
-    options: {
-      redirectTo: process.env.NEXT_PUBLIC_SITE_URL + "/auth/callback",
-    },
+    token: credential,
   });
 
   if (error) {
-    redirect("/error");
-  }
-
-  if (data.url) {
-    redirect(data.url);
+    throw new Error(`Failed to sign in with Google: ${error.message}`);
   }
 }
 

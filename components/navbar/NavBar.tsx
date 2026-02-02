@@ -2,14 +2,21 @@
 
 import { NAVBAR_HEIGHT_IN_VH } from "@/constants/layout";
 import { AccountCircle } from "@mui/icons-material";
-import { Box, Button, Stack } from "@mui/material";
-import { JSX } from "react";
+import { AlertColor, Box, Button, Stack } from "@mui/material";
+import { JSX, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "../providers/UserProvider";
 import { GoogleLogin } from "@react-oauth/google";
 import { handleSignInWithGoogle } from "@/lib/auth/actions";
+import React from "react";
+import CustomSnackbar from "../snackbar/CustomSnackbar";
 
 export default function NavBar(): JSX.Element {
+  const [snackBarMessage, setSnackBarMessage] = useState<string>("");
+  const [snackBarSeverity, setSnackBarSeverity] =
+    useState<AlertColor>("success");
+  const [snackBarOpen, setSnackBarOpen] = useState<boolean>(false);
+
   const router = useRouter();
   const user = useUser();
 
@@ -18,61 +25,78 @@ export default function NavBar(): JSX.Element {
   };
 
   return (
-    <Box
-      width={"100vw"}
-      height={`${NAVBAR_HEIGHT_IN_VH}vh`}
-      sx={{
-        background: "#372483",
-        boxShadow: "2",
-        borderBottomRightRadius: "10px",
-        borderBottomLeftRadius: "10px",
-      }}
-    >
-      <Stack
-        direction={"row"}
+    <React.Fragment>
+      <Box
         width={"100vw"}
-        height={"100%"}
-        justifyContent="space-between"
-        alignItems="center"
-        px={2}
+        height={`${NAVBAR_HEIGHT_IN_VH}vh`}
+        sx={{
+          background: "#372483",
+          boxShadow: "2",
+          borderBottomRightRadius: "10px",
+          borderBottomLeftRadius: "10px",
+        }}
       >
-        <Button
-          size="large"
-          sx={{ color: "white", textTransform: "none" }}
-          onClick={homeButtonOnClick}
+        <Stack
+          direction={"row"}
+          width={"100vw"}
+          height={"100%"}
+          justifyContent="space-between"
+          alignItems="center"
+          px={2}
         >
-          jobseekr.
-        </Button>
-        <Box sx={{ pr: 3 }}>
-          {!user && (
-            <div style={{ colorScheme: "light" }}>
-              <GoogleLogin
-                size="medium"
-                onSuccess={(credentialResponse) =>
-                  handleSignInWithGoogle(credentialResponse)
-                }
-                onError={() => {
-                  console.log("Login Failed");
+          <Button
+            size="large"
+            sx={{ color: "white", textTransform: "none" }}
+            onClick={homeButtonOnClick}
+          >
+            jobseekr.
+          </Button>
+          <Box sx={{ pr: 3 }}>
+            {!user && (
+              <div style={{ colorScheme: "light" }}>
+                <GoogleLogin
+                  size="medium"
+                  onSuccess={async (credentialResponse) => {
+                    try {
+                      await handleSignInWithGoogle(credentialResponse);
+                      setSnackBarMessage("Successful sign-in with Google!");
+                      setSnackBarOpen(true);
+                      setSnackBarSeverity("success");
+                    } catch (error) {
+                      setSnackBarMessage(`Google sign-in failed: ${error}`);
+                      setSnackBarOpen(true);
+                      setSnackBarSeverity("error");
+                    }
+                  }}
+                  onError={() => {
+                    console.log("Login Failed");
+                  }}
+                />
+              </div>
+            )}
+            {user && (
+              <Button
+                variant={"outlined"}
+                endIcon={<AccountCircle />}
+                sx={{
+                  textTransform: "none",
+                  color: "white",
+                  borderColor: "white",
                 }}
-              />
-            </div>
-          )}
-          {user && (
-            <Button
-              variant={"outlined"}
-              endIcon={<AccountCircle />}
-              sx={{
-                textTransform: "none",
-                color: "white",
-                borderColor: "white",
-              }}
-              onClick={() => router.replace("/dashboard")}
-            >
-              dashboard
-            </Button>
-          )}
-        </Box>
-      </Stack>
-    </Box>
+                onClick={() => router.replace("/dashboard")}
+              >
+                dashboard
+              </Button>
+            )}
+          </Box>
+        </Stack>
+      </Box>
+      <CustomSnackbar
+        open={snackBarOpen}
+        message={snackBarMessage}
+        severity={snackBarSeverity}
+        setOpen={setSnackBarOpen}
+      />
+    </React.Fragment>
   );
 }

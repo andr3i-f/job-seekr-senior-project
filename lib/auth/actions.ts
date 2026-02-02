@@ -4,25 +4,18 @@ import { redirect } from "next/navigation";
 
 import { createClient } from "@/lib/supabase/server";
 import type { User } from "@supabase/supabase-js";
+import { CredentialResponse } from "@react-oauth/google";
 
-export async function login() {
+export async function handleSignInWithGoogle(response: CredentialResponse) {
   const supabase = await createClient();
 
-  // type-casting here for convenience
-  // in practice, you should validate your inputs
-  const { data, error } = await supabase.auth.signInWithOAuth({
+  const { error } = await supabase.auth.signInWithIdToken({
     provider: "google",
-    options: {
-      redirectTo: process.env.NEXT_PUBLIC_SITE_URL + "/auth/callback",
-    },
+    token: response.credential,
   });
 
   if (error) {
-    redirect("/error");
-  }
-
-  if (data.url) {
-    redirect(data.url);
+    redirect("/404");
   }
 }
 

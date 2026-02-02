@@ -1,23 +1,17 @@
 "use client";
 
 import { NAVBAR_HEIGHT_IN_VH } from "@/constants/layout";
-import { AccountCircle, Login } from "@mui/icons-material";
+import { AccountCircle } from "@mui/icons-material";
 import { Box, Button, Stack } from "@mui/material";
 import { JSX } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "../providers/UserProvider";
+import { GoogleLogin } from "@react-oauth/google";
+import { handleSignInWithGoogle } from "@/lib/auth/actions";
 
 export default function NavBar(): JSX.Element {
   const router = useRouter();
   const user = useUser();
-
-  const profileButtonOnClick = () => {
-    if (user) {
-      router.replace("/dashboard");
-    } else {
-      router.replace("/login");
-    }
-  };
 
   const homeButtonOnClick = () => {
     router.replace("/");
@@ -50,14 +44,31 @@ export default function NavBar(): JSX.Element {
           jobseekr.
         </Button>
         <Box sx={{ pr: 3 }}>
-          <Button
-            variant={"outlined"}
-            endIcon={user ? <AccountCircle /> : <Login />}
-            sx={{ textTransform: "none", color: "white", borderColor: "white" }}
-            onClick={profileButtonOnClick}
-          >
-            {user ? "dashboard" : "login"}
-          </Button>
+          {!user && (
+            <GoogleLogin
+              size="medium"
+              onSuccess={(credentialResponse) =>
+                handleSignInWithGoogle(credentialResponse)
+              }
+              onError={() => {
+                console.log("Login Failed");
+              }}
+            />
+          )}
+          {user && (
+            <Button
+              variant={"outlined"}
+              endIcon={<AccountCircle />}
+              sx={{
+                textTransform: "none",
+                color: "white",
+                borderColor: "white",
+              }}
+              onClick={() => router.replace("/dashboard")}
+            >
+              dashboard
+            </Button>
+          )}
         </Box>
       </Stack>
     </Box>

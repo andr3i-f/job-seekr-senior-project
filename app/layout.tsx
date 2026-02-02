@@ -5,6 +5,7 @@ import NavBar from "@/components/navbar/NavBar";
 import { Box } from "@mui/material";
 import { getUserInfo } from "@/lib/auth/actions";
 import { UserProvider } from "@/components/providers/UserProvider";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,12 +36,16 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body>
-        <UserProvider value={user}>
-          <Box sx={{ background: "linear-gradient(180deg, #2C1D68, #5638CE)" }}>
-            <NavBar />
-            {children}
-          </Box>
-        </UserProvider>
+        <GoogleOAuthProvider clientId="804210602803-b2stb0611i3443i5cenjji597tc9dd3a.apps.googleusercontent.com">
+          <UserProvider value={user}>
+            <Box
+              sx={{ background: "linear-gradient(180deg, #2C1D68, #5638CE)" }}
+            >
+              <NavBar />
+              {children}
+            </Box>
+          </UserProvider>
+        </GoogleOAuthProvider>
       </body>
     </html>
   );

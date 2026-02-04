@@ -13,6 +13,8 @@ import React, { useEffect, useState } from "react";
 import { Job } from "@/constants/types";
 import axios from "axios";
 import LinearLoadingBar from "@/components/LinearLoadingBar";
+import { useQuery } from "@tanstack/react-query";
+import { getJobs } from "@/app/queries/jobs";
 
 function JobCard({ job }: { job: Job }) {
   return (
@@ -57,25 +59,11 @@ export default function RecentJobsCard({
 }: {
   experienceLevel: string | null;
 }) {
-  const [loading, setLoading] = useState<boolean>(false);
-  const [jobs, setJobs] = useState<Job[] | undefined>(undefined);
-
-  useEffect(() => {
-    setLoading(true);
-
-    axios
-      .get("/api/jobs", { params: { experienceLevel: experienceLevel } })
-      .then((response) => {
-        console.log(response.data);
-        setJobs(response.data.jobs as Job[]);
-      })
-      .catch((_) => {
-        console.error("Error trying to get recent jobs!");
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, []);
+  const { isPending, isFetching, isError, data } = useQuery({
+    queryKey: ["dashboard-jobs"],
+    queryFn: () => getJobs(experienceLevel as string),
+    enabled: experienceLevel !== null,
+  });
 
   return (
     <React.Fragment>
@@ -102,15 +90,18 @@ export default function RecentJobsCard({
             borderRadius: 5,
           }}
         >
-          {!loading &&
-            jobs &&
-            jobs.map((job) => (
+          {isPending && !isFetching && (
+            <Typography>Select an experience level first!</Typography>
+          )}
+          {isFetching && <LinearLoadingBar text={"loading jobs. . ."} />}
+          {!isError &&
+            data &&
+            data.jobs.map((job) => (
               <JobCard
                 key={`${job.source}-${job.company_name}-${job.title}`}
                 job={job}
               />
             ))}
-          {loading && !jobs && <LinearLoadingBar text={"loading jobs. . ."} />}
         </Stack>
       </CardContent>
     </React.Fragment>

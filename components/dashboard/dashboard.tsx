@@ -48,7 +48,9 @@ export default function Dashboard() {
           <Grid container size={16} spacing={2} sx={{ height: "50%" }}>
             <Grid size={9}>
               <GenericDashboardCard>
-                <RecentJobsCard />
+                <RecentJobsCard
+                  experienceLevel={dashboardData.profile.experience_level}
+                />
               </GenericDashboardCard>
             </Grid>
             <Grid size={7}>

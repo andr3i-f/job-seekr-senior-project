@@ -1,3 +1,5 @@
+"use client";
+
 import { OpenInNew } from "@mui/icons-material";
 import {
   Card,
@@ -7,8 +9,10 @@ import {
   Typography,
 } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Job } from "@/constants/types";
+import axios from "axios";
+import LinearLoadingBar from "@/components/LinearLoadingBar";
 
 function JobCard({ job }: { job: Job }) {
   return (
@@ -48,54 +52,30 @@ function JobCard({ job }: { job: Job }) {
   );
 }
 
-export default function RecentJobsCard() {
-  const dummyData = [
-    {
-      title: "Software Development Intern",
-      company_name: "Intel",
-      experience_level: "Intern",
-      url: "https://www.google.com/",
-      salary: 55000,
-      location: "Oregon, United States",
-      source: "Adzuna",
-    },
-    {
-      title: "New Graduate Software Developer",
-      company_name: "Amazon",
-      experience_level: "Junior",
-      url: "https://www.google.com/",
-      salary: 75000,
-      location: "Washington, United States",
-      source: "Adzuna",
-    },
-    {
-      title: "Junior Software Developer",
-      company_name: "Google",
-      experience_level: "Junior",
-      url: "https://www.google.com/",
-      salary: 88000,
-      location: "Washington, United States",
-      source: "Adzuna",
-    },
-    {
-      title: "Software Developer I",
-      company_name: "Apple",
-      experience_level: "Junior",
-      url: "https://www.google.com/",
-      salary: 100000,
-      location: "California, United States",
-      source: "Adzuna",
-    },
-    {
-      title: "Software Developer",
-      company_name: "Garmin",
-      experience_level: "Intern",
-      url: "https://www.google.com/",
-      salary: 70000,
-      location: "Oregon, United States",
-      source: "Adzuna",
-    },
-  ];
+export default function RecentJobsCard({
+  experienceLevel,
+}: {
+  experienceLevel: string | null;
+}) {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [jobs, setJobs] = useState<Job[] | undefined>(undefined);
+
+  useEffect(() => {
+    setLoading(true);
+
+    axios
+      .get("/api/jobs", { params: { experienceLevel: experienceLevel } })
+      .then((response) => {
+        console.log(response.data);
+        setJobs(response.data.jobs as Job[]);
+      })
+      .catch((_) => {
+        console.error("Error trying to get recent jobs!");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
 
   return (
     <React.Fragment>
@@ -122,12 +102,15 @@ export default function RecentJobsCard() {
             borderRadius: 5,
           }}
         >
-          {dummyData.map((job) => (
-            <JobCard
-              key={`${job.source}-${job.company_name}-${job.title}`}
-              job={job}
-            />
-          ))}
+          {!loading &&
+            jobs &&
+            jobs.map((job) => (
+              <JobCard
+                key={`${job.source}-${job.company_name}-${job.title}`}
+                job={job}
+              />
+            ))}
+          {loading && !jobs && <LinearLoadingBar text={"loading jobs. . ."} />}
         </Stack>
       </CardContent>
     </React.Fragment>

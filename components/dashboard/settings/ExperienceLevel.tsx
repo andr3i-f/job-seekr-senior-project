@@ -6,7 +6,7 @@ import { Check, Restore } from "@mui/icons-material";
 import { IconButton, MenuItem, Select, Stack, Typography } from "@mui/material";
 import { deepPurple, red } from "@mui/material/colors";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function ExperienceLevel({
   experienceLevel,
@@ -16,6 +16,13 @@ export default function ExperienceLevel({
   const [userExperienceLevel, setUserExperienceLevel] = useState<string>(
     experienceLevel === null ? "" : experienceLevel,
   );
+
+  useEffect(() => {
+    if (experienceLevel && experienceLevel !== userExperienceLevel) {
+      setUserExperienceLevel(experienceLevel);
+    }
+  }, [experienceLevel]);
+
   const [previousUserExperienceLevel, setPreviousUserExperienceLevel] =
     useState<string>(userExperienceLevel);
   const [modified, setModified] = useState<boolean>(false);

@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { deepPurple, red } from "@mui/material/colors";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 function areListsEqual(list1: string[], list2: string[]): boolean {
   if (list1.length !== list2.length) {
@@ -114,6 +114,13 @@ export default function UserSkillsCard({ skills }: { skills: string | null }) {
   const [userSkills, setUserSkills] = useState<string[]>(
     skills === null ? [] : skills.split(","),
   );
+
+  useEffect(() => {
+    if (skills !== null && skills.split(",") !== userSkills) {
+      setUserSkills(skills.split(","));
+    }
+  }, [skills]);
+
   const [previousSkills, setPreviousUserSkills] =
     useState<string[]>(userSkills);
   const [modified, setModified] = useState<boolean>(false);

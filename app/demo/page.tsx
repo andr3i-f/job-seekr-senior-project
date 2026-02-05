@@ -1,7 +1,7 @@
 "use client";
 
 import { NAVBAR_HEIGHT_IN_VH } from "@/constants/layout";
-import { Box, Button, Stack, TextField, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
 import { useQuery } from "@tanstack/react-query";
 import { getDemoJobs } from "../queries/jobs";

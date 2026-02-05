@@ -8,7 +8,7 @@ export default function TanStackQueryProvider({
 }: {
   children: ReactNode;
 }) {
-  const [queryClient, _] = useState(() => new QueryClient());
+  const [queryClient] = useState(() => new QueryClient());
 
   return (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>

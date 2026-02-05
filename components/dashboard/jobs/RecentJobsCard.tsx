@@ -98,7 +98,7 @@ export default function RecentJobsCard({
           {!isError &&
             !isFetching &&
             data &&
-            data.jobs.map((job) => (
+            data.map((job) => (
               <JobCard
                 key={`${job.source}-${job.company_name}-${job.title}`}
                 job={job}

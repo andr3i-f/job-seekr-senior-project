@@ -49,7 +49,7 @@ export default function DemoPage() {
               p: 2,
             }}
           >
-            {data.jobs.map((job) => (
+            {data.map((job) => (
               <JobCard
                 key={`${job.source}-${job.company_name}-${job.title}`}
                 job={job}

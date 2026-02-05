@@ -1,9 +1,11 @@
 "use client";
 
+import { updateExperienceLevel } from "@/app/queries/dashboard";
+import { useToast } from "@/components/providers/ToastProvider";
 import { Check, Restore } from "@mui/icons-material";
 import { IconButton, MenuItem, Select, Stack, Typography } from "@mui/material";
 import { deepPurple, red } from "@mui/material/colors";
-import axios from "axios";
+import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 
 export default function ExperienceLevel({
@@ -17,23 +19,20 @@ export default function ExperienceLevel({
   const [previousUserExperienceLevel, setPreviousUserExperienceLevel] =
     useState<string>(userExperienceLevel);
   const [modified, setModified] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false);
+  const { show } = useToast();
 
-  const onUpdate = () => {
-    setLoading(true);
-    axios
-      .put("/api/dashboard/profile/experience-level", {
-        experienceLevel: userExperienceLevel,
-      })
-      .then(() => {
-        setPreviousUserExperienceLevel(userExperienceLevel);
-        setModified(false);
-      })
-      .catch((_) => console.error("Error trying to update experienceLevel!"))
-      .finally(() => {
-        setLoading(false);
-      });
-  };
+  const { isPending, mutate } = useMutation({
+    mutationFn: (experienceLevel: string) =>
+      updateExperienceLevel(experienceLevel),
+    onSuccess: () => {
+      show("Successfully updated experience level!", "success");
+      setPreviousUserExperienceLevel(userExperienceLevel);
+      setModified(false);
+    },
+    onError: () => {
+      show("Unable to update experience level!", "error");
+    },
+  });
 
   const onReset = () => {
     setUserExperienceLevel(previousUserExperienceLevel);
@@ -53,7 +52,7 @@ export default function ExperienceLevel({
       </Typography>
       <Stack direction={"row"} spacing={1} width={"100%"} sx={{ mt: 1 }}>
         <Select
-          disabled={loading}
+          disabled={isPending}
           sx={{
             width: "55%",
             color: "white",
@@ -98,8 +97,8 @@ export default function ExperienceLevel({
         </Select>
         {modified && (
           <IconButton
-            onClick={onUpdate}
-            disabled={loading}
+            onClick={() => mutate(userExperienceLevel)}
+            disabled={isPending}
             sx={{ color: "green" }}
           >
             <Check />
@@ -108,7 +107,7 @@ export default function ExperienceLevel({
         {modified && (
           <IconButton
             onClick={onReset}
-            disabled={loading}
+            disabled={isPending}
             sx={{ color: red[300] }}
           >
             <Restore />

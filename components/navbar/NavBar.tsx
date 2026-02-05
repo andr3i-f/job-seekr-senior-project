@@ -2,21 +2,17 @@
 
 import { NAVBAR_HEIGHT_IN_VH } from "@/constants/layout";
 import { AccountCircle } from "@mui/icons-material";
-import { AlertColor, Box, Button, Stack } from "@mui/material";
-import { JSX, useState } from "react";
+import { Box, Button, Stack } from "@mui/material";
+import { JSX } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "../providers/UserProvider";
 import { GoogleLogin } from "@react-oauth/google";
 import { handleSignInWithGoogle } from "@/lib/auth/actions";
 import React from "react";
-import CustomSnackbar from "../snackbar/CustomSnackbar";
+import { useToast } from "../providers/ToastProvider";
 
 export default function NavBar(): JSX.Element {
-  const [snackBarMessage, setSnackBarMessage] = useState<string>("");
-  const [snackBarSeverity, setSnackBarSeverity] =
-    useState<AlertColor>("success");
-  const [snackBarOpen, setSnackBarOpen] = useState<boolean>(false);
-
+  const { show } = useToast();
   const router = useRouter();
   const user = useUser();
 
@@ -61,21 +57,16 @@ export default function NavBar(): JSX.Element {
                       await handleSignInWithGoogle(
                         credentialResponse.credential,
                       );
-                      setSnackBarMessage("Successful sign-in with Google!");
-                      setSnackBarOpen(true);
-                      setSnackBarSeverity("success");
+                      show("Successful sign-in with Google!", "success");
                     } catch (error) {
-                      setSnackBarMessage(
+                      show(
                         `Google sign-in failed: ${error instanceof Error ? error.message : String(error)}`,
+                        "error",
                       );
-                      setSnackBarOpen(true);
-                      setSnackBarSeverity("error");
                     }
                   }}
                   onError={() => {
-                    setSnackBarMessage("Google sign-in failed");
-                    setSnackBarOpen(true);
-                    setSnackBarSeverity("error");
+                    show("Google sign-in failed", "error");
                   }}
                 />
               </div>
@@ -97,12 +88,6 @@ export default function NavBar(): JSX.Element {
           </Box>
         </Stack>
       </Box>
-      <CustomSnackbar
-        open={snackBarOpen}
-        message={snackBarMessage}
-        severity={snackBarSeverity}
-        setOpen={setSnackBarOpen}
-      />
     </React.Fragment>
   );
 }

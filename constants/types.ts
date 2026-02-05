@@ -1,3 +1,5 @@
+import { AlertColor } from "@mui/material";
+
 export interface UserProfile {
   skills: string | null;
   experience_level: string | null;
@@ -22,4 +24,10 @@ export interface Job {
   url: string;
   salary: number;
   location: string;
+}
+
+export interface ToastProviderType {
+  open: boolean;
+  message: string;
+  severity: AlertColor;
 }

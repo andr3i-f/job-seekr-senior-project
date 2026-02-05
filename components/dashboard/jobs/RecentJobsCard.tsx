@@ -9,9 +9,8 @@ import {
   Typography,
 } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Job } from "@/constants/types";
-import axios from "axios";
 import LinearLoadingBar from "@/components/LinearLoadingBar";
 import { useQuery } from "@tanstack/react-query";
 import { getJobs } from "@/app/queries/jobs";

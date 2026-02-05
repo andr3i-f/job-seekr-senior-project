@@ -59,7 +59,7 @@ export default function RecentJobsCard({
   experienceLevel: string | null;
 }) {
   const { isPending, isFetching, isError, data } = useQuery({
-    queryKey: ["dashboard-jobs"],
+    queryKey: ["dashboard-jobs", experienceLevel],
     queryFn: () => getJobs(experienceLevel as string),
     enabled: experienceLevel !== null,
   });
@@ -94,6 +94,7 @@ export default function RecentJobsCard({
           )}
           {isFetching && <LinearLoadingBar text={"loading jobs. . ."} />}
           {!isError &&
+            !isFetching &&
             data &&
             data.jobs.map((job) => (
               <JobCard

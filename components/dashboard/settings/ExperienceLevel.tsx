@@ -5,7 +5,7 @@ import { useToast } from "@/components/providers/ToastProvider";
 import { Check, Restore } from "@mui/icons-material";
 import { IconButton, MenuItem, Select, Stack, Typography } from "@mui/material";
 import { deepPurple, red } from "@mui/material/colors";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
 export default function ExperienceLevel({
@@ -19,6 +19,7 @@ export default function ExperienceLevel({
   const [previousUserExperienceLevel, setPreviousUserExperienceLevel] =
     useState<string>(userExperienceLevel);
   const [modified, setModified] = useState<boolean>(false);
+  const queryClient = useQueryClient();
   const { show } = useToast();
 
   const { isPending, mutate } = useMutation({
@@ -28,6 +29,7 @@ export default function ExperienceLevel({
       show("Successfully updated experience level!", "success");
       setPreviousUserExperienceLevel(userExperienceLevel);
       setModified(false);
+      queryClient.invalidateQueries({ queryKey: ["dashboard"] });
     },
     onError: () => {
       show("Unable to update experience level!", "error");

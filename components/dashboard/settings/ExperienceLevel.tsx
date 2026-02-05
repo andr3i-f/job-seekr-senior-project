@@ -1,42 +1,50 @@
 "use client";
 
+import { updateExperienceLevel } from "@/app/queries/dashboard";
+import { useToast } from "@/components/providers/ToastProvider";
 import { Check, Restore } from "@mui/icons-material";
 import { IconButton, MenuItem, Select, Stack, Typography } from "@mui/material";
 import { deepPurple, red } from "@mui/material/colors";
-import axios from "axios";
-import { useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useEffect, useMemo, useState } from "react";
 
 export default function ExperienceLevel({
   experienceLevel,
 }: {
   experienceLevel: string | null;
 }) {
-  const [userExperienceLevel, setUserExperienceLevel] = useState<string>(
-    experienceLevel === null ? "" : experienceLevel,
+  const serverExperienceLevel = useMemo(
+    () => (experienceLevel === null ? "" : experienceLevel),
+    [experienceLevel],
   );
-  const [previousUserExperienceLevel, setPreviousUserExperienceLevel] =
-    useState<string>(userExperienceLevel);
+  const [draftExperienceLevel, setDraftExperienceLevel] = useState<string>(
+    serverExperienceLevel,
+  );
   const [modified, setModified] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false);
 
-  const onUpdate = () => {
-    setLoading(true);
-    axios
-      .put("/api/dashboard/profile/experience-level", {
-        experienceLevel: userExperienceLevel,
-      })
-      .then(() => {
-        setPreviousUserExperienceLevel(userExperienceLevel);
-        setModified(false);
-      })
-      .catch((_) => console.error("Error trying to update experienceLevel!"))
-      .finally(() => {
-        setLoading(false);
-      });
-  };
+  useEffect(() => {
+    setDraftExperienceLevel(serverExperienceLevel);
+    setModified(false);
+  }, [serverExperienceLevel]);
+
+  const queryClient = useQueryClient();
+  const { show } = useToast();
+
+  const { isPending, mutate } = useMutation({
+    mutationFn: (experienceLevel: string) =>
+      updateExperienceLevel(experienceLevel),
+    onSuccess: () => {
+      show("Successfully updated experience level!", "success");
+      setModified(false);
+      queryClient.invalidateQueries({ queryKey: ["dashboard"] });
+    },
+    onError: () => {
+      show("Unable to update experience level!", "error");
+    },
+  });
 
   const onReset = () => {
-    setUserExperienceLevel(previousUserExperienceLevel);
+    setDraftExperienceLevel(serverExperienceLevel);
     setModified(false);
   };
 
@@ -53,7 +61,7 @@ export default function ExperienceLevel({
       </Typography>
       <Stack direction={"row"} spacing={1} width={"100%"} sx={{ mt: 1 }}>
         <Select
-          disabled={loading}
+          disabled={isPending}
           sx={{
             width: "55%",
             color: "white",
@@ -76,7 +84,7 @@ export default function ExperienceLevel({
             },
           }}
           displayEmpty
-          value={userExperienceLevel}
+          value={draftExperienceLevel}
           renderValue={(selected) => {
             if (selected.length === 0) {
               return <em style={{ opacity: 0.5 }}>select a value...</em>;
@@ -84,8 +92,8 @@ export default function ExperienceLevel({
             return selected;
           }}
           onChange={(e) => {
-            setModified(e.target.value !== previousUserExperienceLevel);
-            setUserExperienceLevel(e.target.value);
+            setModified(e.target.value !== serverExperienceLevel);
+            setDraftExperienceLevel(e.target.value);
           }}
         >
           <MenuItem disabled value="">
@@ -98,8 +106,8 @@ export default function ExperienceLevel({
         </Select>
         {modified && (
           <IconButton
-            onClick={onUpdate}
-            disabled={loading}
+            onClick={() => mutate(draftExperienceLevel)}
+            disabled={isPending}
             sx={{ color: "green" }}
           >
             <Check />
@@ -108,7 +116,7 @@ export default function ExperienceLevel({
         {modified && (
           <IconButton
             onClick={onReset}
-            disabled={loading}
+            disabled={isPending}
             sx={{ color: red[300] }}
           >
             <Restore />

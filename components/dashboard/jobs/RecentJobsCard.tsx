@@ -1,3 +1,5 @@
+"use client";
+
 import { OpenInNew } from "@mui/icons-material";
 import {
   Card,
@@ -9,8 +11,11 @@ import {
 import { deepPurple } from "@mui/material/colors";
 import React from "react";
 import { Job } from "@/constants/types";
+import LinearLoadingBar from "@/components/LinearLoadingBar";
+import { useQuery } from "@tanstack/react-query";
+import { getJobs } from "@/app/queries/jobs";
 
-function JobCard({ job }: { job: Job }) {
+export function JobCard({ job }: { job: Job }) {
   return (
     <Card
       sx={{
@@ -48,54 +53,16 @@ function JobCard({ job }: { job: Job }) {
   );
 }
 
-export default function RecentJobsCard() {
-  const dummyData = [
-    {
-      title: "Software Development Intern",
-      company_name: "Intel",
-      experience_level: "Intern",
-      url: "https://www.google.com/",
-      salary: 55000,
-      location: "Oregon, United States",
-      source: "Adzuna",
-    },
-    {
-      title: "New Graduate Software Developer",
-      company_name: "Amazon",
-      experience_level: "Junior",
-      url: "https://www.google.com/",
-      salary: 75000,
-      location: "Washington, United States",
-      source: "Adzuna",
-    },
-    {
-      title: "Junior Software Developer",
-      company_name: "Google",
-      experience_level: "Junior",
-      url: "https://www.google.com/",
-      salary: 88000,
-      location: "Washington, United States",
-      source: "Adzuna",
-    },
-    {
-      title: "Software Developer I",
-      company_name: "Apple",
-      experience_level: "Junior",
-      url: "https://www.google.com/",
-      salary: 100000,
-      location: "California, United States",
-      source: "Adzuna",
-    },
-    {
-      title: "Software Developer",
-      company_name: "Garmin",
-      experience_level: "Intern",
-      url: "https://www.google.com/",
-      salary: 70000,
-      location: "Oregon, United States",
-      source: "Adzuna",
-    },
-  ];
+export default function RecentJobsCard({
+  experienceLevel,
+}: {
+  experienceLevel: string | null;
+}) {
+  const { isPending, isFetching, isError, data } = useQuery({
+    queryKey: ["dashboard-jobs", experienceLevel],
+    queryFn: () => getJobs(experienceLevel as string),
+    enabled: typeof experienceLevel === "string" && experienceLevel.length > 0,
+  });
 
   return (
     <React.Fragment>
@@ -108,6 +75,11 @@ export default function RecentJobsCard() {
         >
           Recent Jobs Found
         </Typography>
+        {isPending && !isFetching && (
+          <Typography variant="h6" fontWeight={"bold"} color={deepPurple[100]}>
+            Select an experience level first!
+          </Typography>
+        )}
         <Stack
           direction={"column"}
           spacing={2}
@@ -122,12 +94,16 @@ export default function RecentJobsCard() {
             borderRadius: 5,
           }}
         >
-          {dummyData.map((job) => (
-            <JobCard
-              key={`${job.source}-${job.company_name}-${job.title}`}
-              job={job}
-            />
-          ))}
+          {isFetching && <LinearLoadingBar text={"loading jobs. . ."} />}
+          {!isError &&
+            !isFetching &&
+            data &&
+            data.map((job) => (
+              <JobCard
+                key={`${job.source}-${job.company_name}-${job.title}`}
+                job={job}
+              />
+            ))}
         </Stack>
       </CardContent>
     </React.Fragment>

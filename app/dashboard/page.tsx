@@ -1,6 +1,6 @@
 "use client";
 
-import Dashboard from "@/components/dashboard/dashboard";
+import Dashboard from "@/components/dashboard/Dashboard";
 import { NAVBAR_HEIGHT_IN_VH } from "@/constants/layout";
 import { Box } from "@mui/material";
 

@@ -61,7 +61,7 @@ export default function RecentJobsCard({
   const { isPending, isFetching, isError, data } = useQuery({
     queryKey: ["dashboard-jobs", experienceLevel],
     queryFn: () => getJobs(experienceLevel as string),
-    enabled: experienceLevel !== null,
+    enabled: typeof experienceLevel === "string" && experienceLevel.length > 0,
   });
 
   return (
@@ -75,6 +75,11 @@ export default function RecentJobsCard({
         >
           Recent Jobs Found
         </Typography>
+        {isPending && !isFetching && (
+          <Typography variant="h6" fontWeight={"bold"} color={deepPurple[100]}>
+            Select an experience level first!
+          </Typography>
+        )}
         <Stack
           direction={"column"}
           spacing={2}
@@ -89,9 +94,6 @@ export default function RecentJobsCard({
             borderRadius: 5,
           }}
         >
-          {isPending && !isFetching && (
-            <Typography>Select an experience level first!</Typography>
-          )}
           {isFetching && <LinearLoadingBar text={"loading jobs. . ."} />}
           {!isError &&
             !isFetching &&

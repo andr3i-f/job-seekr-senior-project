@@ -1,7 +1,7 @@
 "use client";
 
 import { Grid } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import GenericDashboardCard from "./GenericDashboardCard";
 import UserSkillsCard from "./profile/UserSkillsCard";
 import RecentJobsCard from "./jobs/RecentJobsCard";
@@ -12,12 +12,20 @@ import MemeCard from "./meme/MemeCard";
 import LinearLoadingBar from "../LinearLoadingBar";
 import { useQuery } from "@tanstack/react-query";
 import { getDashboard } from "@/app/queries/dashboard";
+import { useToast } from "../providers/ToastProvider";
 
 export default function Dashboard() {
   const { isPending, isError, data } = useQuery({
     queryKey: ["dashboard"],
     queryFn: getDashboard,
   });
+  const { show } = useToast();
+
+  useEffect(() => {
+    if (isError) {
+      show("Failed to load user dashboard!", "error");
+    }
+  }, [isError]);
 
   return (
     <React.Fragment>

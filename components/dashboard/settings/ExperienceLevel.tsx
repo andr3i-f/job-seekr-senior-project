@@ -6,26 +6,27 @@ import { Check, Restore } from "@mui/icons-material";
 import { IconButton, MenuItem, Select, Stack, Typography } from "@mui/material";
 import { deepPurple, red } from "@mui/material/colors";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export default function ExperienceLevel({
   experienceLevel,
 }: {
   experienceLevel: string | null;
 }) {
-  const [userExperienceLevel, setUserExperienceLevel] = useState<string>(
-    experienceLevel === null ? "" : experienceLevel,
+  const serverExperienceLevel = useMemo(
+    () => (experienceLevel === null ? "" : experienceLevel),
+    [experienceLevel],
   );
+  const [draftExperienceLevel, setDraftExperienceLevel] = useState<string>(
+    serverExperienceLevel,
+  );
+  const [modified, setModified] = useState<boolean>(false);
 
   useEffect(() => {
-    if (experienceLevel && experienceLevel !== userExperienceLevel) {
-      setUserExperienceLevel(experienceLevel);
-    }
-  }, [experienceLevel]);
+    setDraftExperienceLevel(serverExperienceLevel);
+    setModified(false);
+  }, [serverExperienceLevel]);
 
-  const [previousUserExperienceLevel, setPreviousUserExperienceLevel] =
-    useState<string>(userExperienceLevel);
-  const [modified, setModified] = useState<boolean>(false);
   const queryClient = useQueryClient();
   const { show } = useToast();
 
@@ -34,7 +35,6 @@ export default function ExperienceLevel({
       updateExperienceLevel(experienceLevel),
     onSuccess: () => {
       show("Successfully updated experience level!", "success");
-      setPreviousUserExperienceLevel(userExperienceLevel);
       setModified(false);
       queryClient.invalidateQueries({ queryKey: ["dashboard"] });
     },
@@ -44,7 +44,7 @@ export default function ExperienceLevel({
   });
 
   const onReset = () => {
-    setUserExperienceLevel(previousUserExperienceLevel);
+    setDraftExperienceLevel(serverExperienceLevel);
     setModified(false);
   };
 
@@ -84,7 +84,7 @@ export default function ExperienceLevel({
             },
           }}
           displayEmpty
-          value={userExperienceLevel}
+          value={draftExperienceLevel}
           renderValue={(selected) => {
             if (selected.length === 0) {
               return <em style={{ opacity: 0.5 }}>select a value...</em>;
@@ -92,8 +92,8 @@ export default function ExperienceLevel({
             return selected;
           }}
           onChange={(e) => {
-            setModified(e.target.value !== previousUserExperienceLevel);
-            setUserExperienceLevel(e.target.value);
+            setModified(e.target.value !== serverExperienceLevel);
+            setDraftExperienceLevel(e.target.value);
           }}
         >
           <MenuItem disabled value="">
@@ -106,7 +106,7 @@ export default function ExperienceLevel({
         </Select>
         {modified && (
           <IconButton
-            onClick={() => mutate(userExperienceLevel)}
+            onClick={() => mutate(draftExperienceLevel)}
             disabled={isPending}
             sx={{ color: "green" }}
           >

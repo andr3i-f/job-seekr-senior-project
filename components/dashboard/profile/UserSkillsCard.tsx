@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { deepPurple, red } from "@mui/material/colors";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 function areListsEqual(list1: string[], list2: string[]): boolean {
   if (list1.length !== list2.length) {
@@ -111,40 +111,38 @@ function AddNewSkill({
 }
 
 export default function UserSkillsCard({ skills }: { skills: string | null }) {
-  const [userSkills, setUserSkills] = useState<string[]>(
-    skills === null ? [] : skills.split(","),
+  const serverSkills = useMemo(
+    () => (skills ? skills.split(",") : []),
+    [skills],
   );
-
-  useEffect(() => {
-    if (skills !== null && skills.split(",") !== userSkills) {
-      setUserSkills(skills.split(","));
-    }
-  }, [skills]);
-
-  const [previousSkills, setPreviousUserSkills] =
-    useState<string[]>(userSkills);
+  const [draftSkills, setDraftSkills] = useState<string[]>(serverSkills);
   const [modified, setModified] = useState<boolean>(false);
 
+  useEffect(() => {
+    setDraftSkills(serverSkills);
+    setModified(false);
+  }, [serverSkills]);
+
   const onDelete = (index: number) => {
-    setUserSkills((prevSkills) => {
+    setDraftSkills((prevSkills) => {
       const newSkills = prevSkills.filter(
         (_, skillIndex) => skillIndex !== index,
       );
-      setModified(!areListsEqual(newSkills, previousSkills));
+      setModified(!areListsEqual(newSkills, serverSkills));
       return newSkills;
     });
   };
 
   const onAddSkill = (skill: string) => {
-    setUserSkills((prevSkills) => {
+    setDraftSkills((prevSkills) => {
       const newSkills = [...prevSkills, skill];
-      setModified(!areListsEqual(newSkills, previousSkills));
+      setModified(!areListsEqual(newSkills, serverSkills));
       return newSkills;
     });
   };
 
   const onReset = () => {
-    setUserSkills(previousSkills);
+    setDraftSkills(serverSkills);
     setModified(false);
   };
 
@@ -154,7 +152,6 @@ export default function UserSkillsCard({ skills }: { skills: string | null }) {
     mutationFn: (skills: string[]) => updateUserSkills(skills),
     onSuccess: () => {
       show("Successfully updated skills!", "success");
-      setPreviousUserSkills(userSkills);
       setModified(false);
       queryClient.invalidateQueries({ queryKey: ["dashboard"] });
     },
@@ -170,7 +167,7 @@ export default function UserSkillsCard({ skills }: { skills: string | null }) {
           Skills
         </Typography>
         <Grid container spacing={1} mb={2}>
-          {userSkills.map((skill, index) => (
+          {draftSkills.map((skill, index) => (
             <Grid size={{ xs: 3, xl: 2 }} key={`${skill}-${index}`}>
               <SkillChip skill={skill} index={index} onDelete={onDelete} />
             </Grid>
@@ -181,7 +178,7 @@ export default function UserSkillsCard({ skills }: { skills: string | null }) {
         <AddNewSkill onAddSkill={onAddSkill} disabled={isPending} />
         {modified && (
           <IconButton
-            onClick={() => mutate(userSkills)}
+            onClick={() => mutate(draftSkills)}
             disabled={isPending}
             sx={{ color: "green" }}
           >

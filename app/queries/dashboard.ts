@@ -12,3 +12,10 @@ export async function updateExperienceLevel(experienceLevel: string) {
   });
   return data.data;
 }
+
+export async function updateUserSkills(skills: string[]) {
+  const data = await axios.put("/api/dashboard/profile/skills", {
+    skills: skills.length > 0 ? skills.join(",") : null,
+  });
+  return data.data;
+}

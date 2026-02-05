@@ -1,3 +1,5 @@
+import { updateUserSkills } from "@/app/queries/dashboard";
+import { useToast } from "@/components/providers/ToastProvider";
 import { Add, Check, Restore } from "@mui/icons-material";
 import {
   CardActions,
@@ -10,7 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 import { deepPurple, red } from "@mui/material/colors";
-import axios from "axios";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React, { useState } from "react";
 
 function areListsEqual(list1: string[], list2: string[]): boolean {
@@ -115,7 +117,6 @@ export default function UserSkillsCard({ skills }: { skills: string | null }) {
   const [previousSkills, setPreviousUserSkills] =
     useState<string[]>(userSkills);
   const [modified, setModified] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false);
 
   const onDelete = (index: number) => {
     setUserSkills((prevSkills) => {
@@ -135,26 +136,25 @@ export default function UserSkillsCard({ skills }: { skills: string | null }) {
     });
   };
 
-  const onUpdate = () => {
-    setLoading(true);
-    axios
-      .put("/api/dashboard/profile/skills", {
-        skills: userSkills.length > 0 ? userSkills.join(",") : null,
-      })
-      .then(() => {
-        setPreviousUserSkills(userSkills);
-        setModified(false);
-      })
-      .catch((_) => console.error("Error trying to update skills!"))
-      .finally(() => {
-        setLoading(false);
-      });
-  };
-
   const onReset = () => {
     setUserSkills(previousSkills);
     setModified(false);
   };
+
+  const queryClient = useQueryClient();
+  const { show } = useToast();
+  const { isPending, mutate } = useMutation({
+    mutationFn: (skills: string[]) => updateUserSkills(skills),
+    onSuccess: () => {
+      show("Successfully updated skills!", "success");
+      setPreviousUserSkills(userSkills);
+      setModified(false);
+      queryClient.invalidateQueries({ queryKey: ["dashboard"] });
+    },
+    onError: () => {
+      show("Unable to update skills!", "error");
+    },
+  });
 
   return (
     <React.Fragment>
@@ -171,11 +171,11 @@ export default function UserSkillsCard({ skills }: { skills: string | null }) {
         </Grid>
       </CardContent>
       <CardActions>
-        <AddNewSkill onAddSkill={onAddSkill} disabled={loading} />
+        <AddNewSkill onAddSkill={onAddSkill} disabled={isPending} />
         {modified && (
           <IconButton
-            onClick={onUpdate}
-            disabled={loading}
+            onClick={() => mutate(userSkills)}
+            disabled={isPending}
             sx={{ color: "green" }}
           >
             <Check />
@@ -184,7 +184,7 @@ export default function UserSkillsCard({ skills }: { skills: string | null }) {
         {modified && (
           <IconButton
             onClick={onReset}
-            disabled={loading}
+            disabled={isPending}
             sx={{ color: red[300] }}
           >
             <Restore />

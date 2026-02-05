@@ -15,7 +15,7 @@ import LinearLoadingBar from "@/components/LinearLoadingBar";
 import { useQuery } from "@tanstack/react-query";
 import { getJobs } from "@/app/queries/jobs";
 
-function JobCard({ job }: { job: Job }) {
+export function JobCard({ job }: { job: Job }) {
   return (
     <Card
       sx={{

@@ -7,3 +7,8 @@ export async function getJobs(experienceLevel: string): Promise<Job[]> {
   });
   return data.data;
 }
+
+export async function getDemoJobs(): Promise<Job[]> {
+  const data = await axios.get("/api/jobs/limited-generic-jobs");
+  return data.data;
+}

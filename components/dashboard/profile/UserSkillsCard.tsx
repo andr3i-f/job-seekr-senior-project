@@ -1,91 +1,19 @@
 import { updateUserSkills } from "@/app/queries/dashboard";
+import AddNewChip from "@/components/common/AddNewChip";
 import CustomChip from "@/components/common/CustomChip";
 import { useToast } from "@/components/providers/ToastProvider";
-import { Add, Check, Restore } from "@mui/icons-material";
+import { areListsEqual } from "@/constants/functions";
+import { Check, Restore } from "@mui/icons-material";
 import {
   CardActions,
   CardContent,
   Grid,
   IconButton,
-  Stack,
-  TextField,
   Typography,
 } from "@mui/material";
 import { deepPurple, red } from "@mui/material/colors";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React, { useEffect, useMemo, useState } from "react";
-
-function areListsEqual(list1: string[], list2: string[]): boolean {
-  if (list1.length !== list2.length) {
-    return false;
-  }
-
-  const set1 = new Set(list1);
-  const set2 = new Set(list2);
-
-  for (const item of set1) {
-    if (!set2.has(item)) {
-      return false;
-    }
-  }
-
-  return true;
-}
-
-function AddNewSkill({
-  onAddSkill,
-  disabled,
-}: {
-  onAddSkill: (arg0: string) => void;
-  disabled: boolean;
-}) {
-  const [skill, setSkill] = useState("");
-
-  return (
-    <Stack
-      direction={"row"}
-      spacing={1}
-      justifyContent={"end"}
-      alignItems={"center"}
-      border={`2px solid ${deepPurple[200]}`}
-      borderRadius={3}
-      width={"fit-content"}
-    >
-      <TextField
-        onChange={(e) => setSkill(e.target.value)}
-        value={skill}
-        placeholder="enter new skill. . ."
-        sx={{
-          display: "flex",
-          "& .MuiOutlinedInput-root": {
-            "& fieldset": {
-              borderColor: "transparent",
-            },
-            "&:hover fieldset": {
-              borderColor: "transparent",
-            },
-            "&.Mui-focused fieldset": {
-              borderColor: "transparent",
-            },
-          },
-          "& .MuiOutlinedInput-input": {
-            color: "white",
-          },
-        }}
-      />
-      <IconButton
-        sx={{ color: deepPurple[300] }}
-        onClick={() => {
-          onAddSkill(skill.replaceAll(",", ""));
-          setSkill("");
-        }}
-        disabled={disabled}
-      >
-        <Add />
-      </IconButton>
-    </Stack>
-  );
-}
 
 export default function UserSkillsCard({ skills }: { skills: string | null }) {
   const serverSkills = useMemo(
@@ -152,7 +80,7 @@ export default function UserSkillsCard({ skills }: { skills: string | null }) {
         </Grid>
       </CardContent>
       <CardActions>
-        <AddNewSkill onAddSkill={onAddSkill} disabled={isPending} />
+        <AddNewChip onAddChip={onAddSkill} disabled={isPending} />
         {modified && (
           <IconButton
             onClick={() => mutate(draftSkills)}

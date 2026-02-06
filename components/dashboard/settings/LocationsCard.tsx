@@ -1,4 +1,5 @@
 import { updateUserSkills } from "@/app/queries/dashboard";
+import CustomChip from "@/components/common/CustomChip";
 import { useToast } from "@/components/providers/ToastProvider";
 import { Add, Check, Restore } from "@mui/icons-material";
 import {
@@ -32,29 +33,6 @@ function areListsEqual(list1: string[], list2: string[]): boolean {
   return true;
 }
 
-function SkillChip({
-  skill,
-  index,
-  onDelete,
-}: {
-  skill: string;
-  index: number;
-  onDelete: (arg0: number) => void;
-}) {
-  return (
-    <Chip
-      onDelete={() => onDelete(index)}
-      variant="outlined"
-      label={skill}
-      sx={{
-        borderColor: deepPurple[600],
-        bgcolor: deepPurple[600],
-        color: "white",
-      }}
-    />
-  );
-}
-
 function AddNewSkill({
   onAddSkill,
   disabled,
@@ -77,7 +55,7 @@ function AddNewSkill({
       <TextField
         onChange={(e) => setSkill(e.target.value)}
         value={skill}
-        placeholder="enter new skill. . ."
+        placeholder="enter new location. . ."
         sx={{
           display: "flex",
           "& .MuiOutlinedInput-root": {
@@ -169,7 +147,7 @@ export default function LocationsCard({ skills }: { skills: string | null }) {
         <Grid container spacing={1} mb={2}>
           {draftSkills.map((skill, index) => (
             <Grid size={{ xs: 3, xl: 2 }} key={`${skill}-${index}`}>
-              <SkillChip skill={skill} index={index} onDelete={onDelete} />
+              <CustomChip label={skill} index={index} onDelete={onDelete} />
             </Grid>
           ))}
         </Grid>

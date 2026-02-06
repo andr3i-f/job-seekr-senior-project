@@ -10,8 +10,8 @@ import StatisticsCard from "./jobs/StatisticsCard";
 import GeneralSettingsCard from "./settings/GeneralSettingsCard";
 import MemeCard from "./meme/MemeCard";
 import LinearLoadingBar from "../LinearLoadingBar";
-import { useQuery } from "@tanstack/react-query";
-import { getDashboard } from "@/app/queries/dashboard";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { getDashboard, updateUserSkills } from "@/app/queries/dashboard";
 import { useToast } from "../providers/ToastProvider";
 import LocationsCard from "./settings/LocationsCard";
 import ChipsManagerCard from "../common/ChipsManagerCard";
@@ -53,7 +53,18 @@ export default function Dashboard() {
               <Grid columns={1} container spacing={2} sx={{ height: "100%" }}>
                 <Grid size={1}>
                   <GenericDashboardCard>
-                    <ChipsManagerCard skills={data.profile.skills} />
+                    <ChipsManagerCard data={data.profile.skills ? data.profile.skills.split(",") : []} header={"Skills"} mutation={
+                      useMutation({
+                            mutationFn: (skills: string[]) => updateUserSkills(skills),
+                            onSuccess: () => {
+                              show("Successfully updated skills!", "success");
+                              queryClient.invalidateQueries({ queryKey: ["dashboard"] });
+                            },
+                            onError: () => {
+                              show("Unable to update skills!", "error");
+                            },
+                      })
+                    } />
                   </GenericDashboardCard>
                 </Grid>
                 <Grid size={1}>

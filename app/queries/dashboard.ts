@@ -33,3 +33,10 @@ export async function updateWorkFromHome(workFromHome: string) {
   });
   return data.data;
 }
+
+export async function updateStartUps(startUps: boolean) {
+  const data = await axios.put("/api/dashboard/settings/start-ups", {
+    startUps: startUps,
+  });
+  return data.data;
+}

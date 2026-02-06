@@ -8,9 +8,11 @@ import StartUpsSwitch from "./StartUpsSwitch";
 export default function UserPreferencesCard({
   experienceLevel,
   workFromHome,
+  startUps,
 }: {
   experienceLevel: string | null;
   workFromHome: string | null;
+  startUps: boolean;
 }) {
   return (
     <React.Fragment>
@@ -24,7 +26,7 @@ export default function UserPreferencesCard({
           Preferences
         </Typography>
         <ExperienceLevel experienceLevel={experienceLevel} />
-        <StartUpsSwitch startUps={false} />
+        <StartUpsSwitch startUps={startUps} />
         <WorkFromHome workFromHome={workFromHome} />
       </CardContent>
     </React.Fragment>

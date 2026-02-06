@@ -21,8 +21,15 @@ export async function updateUserSkills(skills: string[]) {
 }
 
 export async function updateUserLocations(locations: string[]) {
-  const data = await axios.put("/api/dashboard/profile/locations", {
+  const data = await axios.put("/api/dashboard/settings/locations", {
     locations: locations.length > 0 ? locations.join("|") : null,
+  });
+  return data.data;
+}
+
+export async function updateWorkFromHome(workFromHome: string) {
+  const data = await axios.put("/api/dashboard/settings/work-from-home", {
+    workFromHome: workFromHome,
   });
   return data.data;
 }

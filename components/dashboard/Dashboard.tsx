@@ -100,6 +100,7 @@ export default function Dashboard() {
               <GenericDashboardCard>
                 <UserPreferencesCard
                   experienceLevel={data.profile.experience_level}
+                  workFromHome={data.settings.work_from_home}
                 />
               </GenericDashboardCard>
             </Grid>

@@ -1,7 +1,7 @@
 import { Stack, Switch, Typography } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
 
-export default function StartUps({ startUps }: { startUps: boolean }) {
+export default function EmailsSwitch() {
   return (
     <Stack
       direction={"column"}
@@ -11,20 +11,20 @@ export default function StartUps({ startUps }: { startUps: boolean }) {
       }}
     >
       <Typography variant="h6" color={deepPurple[100]} mt={1}>
-        Start ups?
+        Want emails?
       </Typography>
       <Switch
         sx={{
           "& .MuiSwitch-switchBase.Mui-checked .MuiSwitch-thumb": {
-            backgroundColor: "#fefefe", // checked thumb
+            backgroundColor: "#fefefe",
           },
           "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
-            backgroundColor: "#5af174", // checked track
+            backgroundColor: "#5af174",
             opacity: 0.77,
           },
           "& .MuiSwitch-track": {
-            backgroundColor: "#eb7070", // track color when unchecked
-            opacity: 0.77, // remove default faded look
+            backgroundColor: "#eb7070",
+            opacity: 0.77,
           },
         }}
       />

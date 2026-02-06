@@ -1,6 +1,8 @@
 import { CardContent, Typography } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
 import React from "react";
+import UploadResumeButton from "./UploadResumeButton";
+import EmailsSwitch from "./EmailsSwitch";
 
 export default function GeneralSettingsCard() {
   return (
@@ -14,6 +16,8 @@ export default function GeneralSettingsCard() {
         >
           General Settings
         </Typography>
+        <UploadResumeButton />
+        <EmailsSwitch />
       </CardContent>
     </React.Fragment>
   );

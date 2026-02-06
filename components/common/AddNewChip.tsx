@@ -6,9 +6,11 @@ import { useState } from "react";
 export default function AddNewChip({
   onAddChip,
   disabled,
+  type,
 }: {
   onAddChip: (arg0: string) => void;
   disabled: boolean;
+  type: string;
 }) {
   const [label, setLabel] = useState("");
 
@@ -25,7 +27,7 @@ export default function AddNewChip({
       <TextField
         onChange={(e) => setLabel(e.target.value)}
         value={label}
-        placeholder="enter new location. . ."
+        placeholder={`enter new ${type}. . .`}
         sx={{
           display: "flex",
           "& .MuiOutlinedInput-root": {

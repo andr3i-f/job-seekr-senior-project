@@ -13,6 +13,7 @@ import LinearLoadingBar from "../LinearLoadingBar";
 import { useQuery } from "@tanstack/react-query";
 import { getDashboard } from "@/app/queries/dashboard";
 import { useToast } from "../providers/ToastProvider";
+import LocationsCard from "./settings/LocationsCard";
 
 export default function Dashboard() {
   const { isPending, isError, data } = useQuery({
@@ -48,9 +49,18 @@ export default function Dashboard() {
           </Grid>
           <Grid container size={16} spacing={2} sx={{ height: "50%" }}>
             <Grid size={4}>
-              <GenericDashboardCard>
-                <UserSkillsCard skills={data.profile.skills} />
-              </GenericDashboardCard>
+              <Grid columns={1} container spacing={2} sx={{ height: "100%" }}>
+                <Grid size={1}>
+                  <GenericDashboardCard>
+                    <UserSkillsCard skills={data.profile.skills} />
+                  </GenericDashboardCard>
+                </Grid>
+                <Grid size={1}>
+                  <GenericDashboardCard>
+                    <LocationsCard skills={"bruh"} />
+                  </GenericDashboardCard>
+                </Grid>
+              </Grid>
             </Grid>
             <Grid size={4}>
               <GenericDashboardCard>

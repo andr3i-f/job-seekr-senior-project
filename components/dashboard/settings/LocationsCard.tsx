@@ -15,6 +15,8 @@ import { deepPurple, red } from "@mui/material/colors";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React, { useEffect, useMemo, useState } from "react";
 
+// header, mutationQuery, make the passed in data already a list probably
+
 export default function LocationsCard({ skills }: { skills: string | null }) {
   const serverSkills = useMemo(
     () => (skills ? skills.split(",") : []),

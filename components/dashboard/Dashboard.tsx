@@ -14,6 +14,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getDashboard } from "@/app/queries/dashboard";
 import { useToast } from "../providers/ToastProvider";
 import LocationsCard from "./settings/LocationsCard";
+import ChipsManagerCard from "../common/ChipsManagerCard";
 
 export default function Dashboard() {
   const { isPending, isError, data } = useQuery({
@@ -52,12 +53,12 @@ export default function Dashboard() {
               <Grid columns={1} container spacing={2} sx={{ height: "100%" }}>
                 <Grid size={1}>
                   <GenericDashboardCard>
-                    <UserSkillsCard skills={data.profile.skills} />
+                    <ChipsManagerCard skills={data.profile.skills} />
                   </GenericDashboardCard>
                 </Grid>
                 <Grid size={1}>
                   <GenericDashboardCard>
-                    <LocationsCard skills={"bruh"} />
+                    <ChipsManagerCard skills={"bruh"} />
                   </GenericDashboardCard>
                 </Grid>
               </Grid>

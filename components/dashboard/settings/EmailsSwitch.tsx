@@ -16,6 +16,7 @@ export default function EmailsSwitch() {
         Want emails?
       </Typography>
       <Switch
+        size={"small"}
         disabled={true}
         sx={{
           "& .MuiSwitch-switchBase.Mui-checked .MuiSwitch-thumb": {

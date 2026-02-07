@@ -53,11 +53,17 @@ export default function WorkFromHome({
         width: "100%",
       }}
     >
-      <Typography variant="h6" color={deepPurple[100]} mt={1}>
+      <Typography
+        variant="body1"
+        fontWeight={"bold"}
+        color={deepPurple[100]}
+        mt={1}
+      >
         Work from home?
       </Typography>
-      <Stack direction={"row"} spacing={1} width={"100%"} sx={{ mt: 1 }}>
+      <Stack direction={"row"} spacing={1} width={"100%"}>
         <Select
+          size="small"
           sx={{
             width: "55%",
             color: "white",

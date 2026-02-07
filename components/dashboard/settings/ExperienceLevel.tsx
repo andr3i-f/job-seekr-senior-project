@@ -56,11 +56,17 @@ export default function ExperienceLevel({
         width: "100%",
       }}
     >
-      <Typography variant="h6" color={deepPurple[100]} mt={1}>
+      <Typography
+        variant="body1"
+        fontWeight={"bold"}
+        color={deepPurple[100]}
+        mt={1}
+      >
         Experience Level
       </Typography>
-      <Stack direction={"row"} spacing={1} width={"100%"} sx={{ mt: 1 }}>
+      <Stack direction={"row"} spacing={1} width={"100%"}>
         <Select
+          size="small"
           disabled={isPending}
           sx={{
             width: "55%",

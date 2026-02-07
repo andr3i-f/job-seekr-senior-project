@@ -28,7 +28,7 @@ export async function PUT(req: Request) {
     return NextResponse.json({ error: "Not authenticated" }, { status: 400 });
   }
 
-  const { data: profile, error: er } = await supabase
+  const { data: profile } = await supabase
     .from("user_profiles")
     .select("id")
     .eq("auth_user_fk", user.id)
@@ -46,5 +46,5 @@ export async function PUT(req: Request) {
     );
   }
 
-  return NextResponse.json({ locations: data }, { status: 200 });
+  return NextResponse.json({ startUps: data }, { status: 200 });
 }

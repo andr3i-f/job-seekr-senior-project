@@ -27,20 +27,12 @@ export default function Dashboard() {
   const queryClient = useQueryClient();
   const userSkillsMutation = useMutation({
     mutationFn: (skills: string[]) => updateUserSkills(skills),
-    onSuccess: () => {
-      show("Successfully updated skills!", "success");
-      queryClient.invalidateQueries({ queryKey: ["dashboard"] });
-    },
     onError: () => {
       show("Unable to update skills!", "error");
     },
   });
   const userLocationsMutation = useMutation({
     mutationFn: (locations: string[]) => updateUserLocations(locations),
-    onSuccess: () => {
-      show("Successfully updated locations!", "success");
-      queryClient.invalidateQueries({ queryKey: ["dashboard"] });
-    },
     onError: () => {
       show("Unable to update locations!", "error");
     },

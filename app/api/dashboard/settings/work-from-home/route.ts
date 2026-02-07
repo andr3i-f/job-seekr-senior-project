@@ -7,7 +7,7 @@ export async function PUT(req: Request) {
   if (!body || !("workFromHome" in body)) {
     return NextResponse.json(
       {
-        error: "'locations' list is missing from body!",
+        error: "'workFromHome' list is missing from body!",
       },
       { status: 400 },
     );

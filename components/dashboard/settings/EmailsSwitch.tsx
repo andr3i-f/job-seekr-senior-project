@@ -2,6 +2,8 @@ import { Stack, Switch, Typography } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
 
 export default function EmailsSwitch() {
+  // TODO: hook up to supabase to implement
+
   return (
     <Stack
       direction={"column"}
@@ -14,6 +16,7 @@ export default function EmailsSwitch() {
         Want emails?
       </Typography>
       <Switch
+        disabled={true}
         sx={{
           "& .MuiSwitch-switchBase.Mui-checked .MuiSwitch-thumb": {
             backgroundColor: "#fefefe",

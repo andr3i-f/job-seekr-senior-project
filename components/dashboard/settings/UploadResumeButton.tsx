@@ -3,6 +3,8 @@ import { Button, Stack, Typography } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
 
 export default function UploadResumeButton() {
+  // TODO: Implement functionality
+
   return (
     <Stack
       direction={"column"}
@@ -15,6 +17,7 @@ export default function UploadResumeButton() {
         Resume
       </Typography>
       <Button
+        disabled={true}
         variant={"outlined"}
         sx={{
           textTransform: "none",

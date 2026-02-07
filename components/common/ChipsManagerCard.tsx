@@ -5,13 +5,14 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
-import { UseMutationResult } from "@tanstack/react-query";
+import { UseMutationResult, useQueryClient } from "@tanstack/react-query";
 import React, { useEffect, useMemo, useState } from "react";
 import CustomChip from "./CustomChip";
 import AddNewChip from "./AddNewChip";
 import { deepPurple, red } from "@mui/material/colors";
 import { areListsEqual } from "@/constants/functions";
 import { Check, Restore } from "@mui/icons-material";
+import { useToast } from "../providers/ToastProvider";
 
 export default function ChipsManagerCard({
   header,
@@ -24,6 +25,8 @@ export default function ChipsManagerCard({
   mutation: UseMutationResult<any, Error, string[], unknown>;
   splitter: string;
 }) {
+  const { show } = useToast();
+  const queryClient = useQueryClient();
   const serverData = useMemo(() => (data ? data.split(splitter) : []), [data]);
   const [draftData, setDraftData] = useState<string[]>(serverData);
   const [modified, setModified] = useState<boolean>(false);
@@ -78,8 +81,16 @@ export default function ChipsManagerCard({
         {modified && (
           <IconButton
             onClick={() => {
-              setModified(false);
-              mutation.mutate(draftData);
+              mutation.mutate(draftData, {
+                onSuccess: () => {
+                  show(
+                    `Successfully updated ${header.toLowerCase()}!`,
+                    "success",
+                  );
+                  queryClient.invalidateQueries({ queryKey: ["dashboard"] });
+                  setModified(false);
+                },
+              });
             }}
             disabled={mutation.isPending}
             sx={{ color: "green" }}

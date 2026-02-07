@@ -43,11 +43,17 @@ export default function StartUpsSwitch({ startUps }: { startUps: boolean }) {
         width: "100%",
       }}
     >
-      <Typography variant="h6" color={deepPurple[100]} mt={1}>
+      <Typography
+        variant="body1"
+        fontWeight={"bold"}
+        color={deepPurple[100]}
+        mt={1}
+      >
         Start ups?
       </Typography>
-      <Stack direction={"row"} spacing={1} width={"100%"} sx={{ mt: 1 }}>
+      <Stack direction={"row"} spacing={1} width={"100%"}>
         <Switch
+          size="small"
           sx={{
             "& .MuiSwitch-switchBase.Mui-checked .MuiSwitch-thumb": {
               backgroundColor: "#fefefe",

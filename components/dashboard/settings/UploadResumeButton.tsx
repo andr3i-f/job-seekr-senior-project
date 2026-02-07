@@ -17,6 +17,8 @@ export default function UploadResumeButton() {
         Resume
       </Typography>
       <Button
+        size="small"
+        color="primary"
         disabled={true}
         variant={"outlined"}
         sx={{

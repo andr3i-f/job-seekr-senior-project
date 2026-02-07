@@ -60,12 +60,12 @@ export default function ChipsManagerCard({
   return (
     <React.Fragment>
       <CardContent sx={{ flexGrow: 1 }}>
-        <Typography variant="h5" fontWeight={"bold"} color={deepPurple[100]}>
+        <Typography variant={"h5"} fontWeight={"bold"} color={deepPurple[100]}>
           {header}
         </Typography>
-        <Grid container spacing={1} mb={2}>
+        <Grid container spacing={1}>
           {draftData.map((skill, index) => (
-            <Grid size={{ xs: 3, xl: 2 }} key={`${skill}-${index}`}>
+            <Grid size={{ xs: 4, xl: 2 }} key={`${skill}-${index}`}>
               <CustomChip label={skill} index={index} onDelete={onDelete} />
             </Grid>
           ))}

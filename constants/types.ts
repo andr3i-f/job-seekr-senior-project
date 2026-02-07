@@ -8,7 +8,7 @@ export interface UserProfile {
 export interface UserSettings {
   work_from_home: string | null;
   locations: string | null;
-  start_ups: boolean | null;
+  start_ups: boolean;
 }
 
 export interface DashboardResponse {

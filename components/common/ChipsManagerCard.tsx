@@ -73,6 +73,7 @@ export default function ChipsManagerCard({
           onAddChip={onAddSkill}
           disabled={mutation.isPending}
           type={header.toLowerCase()}
+          removeFromString={splitter}
         />
         {modified && (
           <IconButton

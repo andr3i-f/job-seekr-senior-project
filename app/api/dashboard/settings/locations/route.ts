@@ -35,7 +35,7 @@ export async function PUT(req: Request) {
   const { data: profile } = await supabase
     .from("user_profiles")
     .select("id")
-    .eq("auth_users_fk", user.id)
+    .eq("auth_user_fk", user.id)
     .single();
   const { data, error } = await supabase
     .from("user_settings")

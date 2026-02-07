@@ -28,11 +28,12 @@ export async function PUT(req: Request) {
     return NextResponse.json({ error: "Not authenticated" }, { status: 400 });
   }
 
-  const { data: profile } = await supabase
+  const { data: profile, error: er } = await supabase
     .from("user_profiles")
     .select("id")
-    .eq("auth_users_fk", user.id)
+    .eq("auth_user_fk", user.id)
     .single();
+
   const { data, error } = await supabase
     .from("user_settings")
     .update({ start_ups: body["startUps"] })

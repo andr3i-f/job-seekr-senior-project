@@ -13,13 +13,16 @@ export async function PUT(req: Request) {
     );
   }
 
+  const allowed_work_from_home_input = ["No preference", "No", "Yes"];
   if (
     body["workFromHome"] !== null &&
-    typeof body["workFromHome"] !== "boolean"
+    (typeof body["workFromHome"] !== "string" ||
+      !allowed_work_from_home_input.includes(body["workFromHome"]))
   ) {
     return NextResponse.json(
       {
-        error: "'workFromHome' is incorrect type!",
+        error:
+          "'workFromHome' must be one of the following: 'No preference', 'No', 'Yes'!",
       },
       { status: 400 },
     );
@@ -38,7 +41,7 @@ export async function PUT(req: Request) {
   const { data: profile } = await supabase
     .from("user_profiles")
     .select("id")
-    .eq("auth_users_fk", user.id)
+    .eq("auth_user_fk", user.id)
     .single();
   const { data, error } = await supabase
     .from("user_settings")

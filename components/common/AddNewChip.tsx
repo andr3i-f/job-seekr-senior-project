@@ -7,10 +7,12 @@ export default function AddNewChip({
   onAddChip,
   disabled,
   type,
+  removeFromString,
 }: {
   onAddChip: (arg0: string) => void;
   disabled: boolean;
   type: string;
+  removeFromString: string;
 }) {
   const [label, setLabel] = useState("");
 
@@ -49,7 +51,7 @@ export default function AddNewChip({
       <IconButton
         sx={{ color: deepPurple[300] }}
         onClick={() => {
-          onAddChip(label.replaceAll(RegExp("(,|\|)", "g"), ""));
+          onAddChip(label.replaceAll(removeFromString, ""));
           setLabel("");
         }}
         disabled={disabled}

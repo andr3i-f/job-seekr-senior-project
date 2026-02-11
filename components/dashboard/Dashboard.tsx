@@ -5,11 +5,10 @@ import React, { useEffect } from "react";
 import GenericDashboardCard from "./GenericDashboardCard";
 import RecentJobsCard from "./jobs/RecentJobsCard";
 import UserPreferencesCard from "./settings/UserPreferencesCard";
-import StatisticsCard from "./jobs/StatisticsCard";
 import GeneralSettingsCard from "./settings/GeneralSettingsCard";
 import MemeCard from "./meme/MemeCard";
 import LinearLoadingBar from "../LinearLoadingBar";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   getDashboard,
   updateUserLocations,
@@ -24,7 +23,6 @@ export default function Dashboard() {
     queryFn: getDashboard,
   });
   const { show } = useToast();
-  const queryClient = useQueryClient();
   const userSkillsMutation = useMutation({
     mutationFn: (skills: string[]) => updateUserSkills(skills),
     onError: () => {
@@ -50,43 +48,39 @@ export default function Dashboard() {
       {!isError && data && (
         <Grid container spacing={2} columns={16} height={"100%"}>
           <Grid container size={16} spacing={2} sx={{ height: "50%" }}>
-            <Grid size={9}>
+            <Grid size={10}>
               <GenericDashboardCard>
                 <RecentJobsCard
                   experienceLevel={data.profile.experience_level}
                 />
               </GenericDashboardCard>
             </Grid>
-            <Grid size={7}>
+            <Grid size={6}>
               <GenericDashboardCard>
-                <StatisticsCard />
+                <MemeCard />
               </GenericDashboardCard>
             </Grid>
           </Grid>
           <Grid container size={16} spacing={2} sx={{ height: "50%" }}>
+            <Grid size={4} sx={{ height: "100%" }}>
+              <GenericDashboardCard>
+                <ChipsManagerCard
+                  data={data.profile.skills}
+                  header={"Skills"}
+                  mutation={userSkillsMutation}
+                  splitter={","}
+                />
+              </GenericDashboardCard>
+            </Grid>
             <Grid size={4}>
-              <Grid columns={1} container spacing={2} sx={{ height: "100%" }}>
-                <Grid size={1}>
-                  <GenericDashboardCard>
-                    <ChipsManagerCard
-                      data={data.profile.skills}
-                      header={"Skills"}
-                      mutation={userSkillsMutation}
-                      splitter={","}
-                    />
-                  </GenericDashboardCard>
-                </Grid>
-                <Grid size={1}>
-                  <GenericDashboardCard>
-                    <ChipsManagerCard
-                      data={data.settings.locations}
-                      header={"Locations"}
-                      mutation={userLocationsMutation}
-                      splitter={"|"}
-                    />
-                  </GenericDashboardCard>
-                </Grid>
-              </Grid>
+              <GenericDashboardCard>
+                <ChipsManagerCard
+                  data={data.settings.locations}
+                  header={"Locations"}
+                  mutation={userLocationsMutation}
+                  splitter={"|"}
+                />
+              </GenericDashboardCard>
             </Grid>
             <Grid size={4}>
               <GenericDashboardCard>
@@ -100,11 +94,6 @@ export default function Dashboard() {
             <Grid size={4}>
               <GenericDashboardCard>
                 <GeneralSettingsCard />
-              </GenericDashboardCard>
-            </Grid>
-            <Grid size={4}>
-              <GenericDashboardCard>
-                <MemeCard />
               </GenericDashboardCard>
             </Grid>
           </Grid>

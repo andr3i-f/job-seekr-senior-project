@@ -106,7 +106,7 @@ export default function MemeCard() {
               onLoad={() => setLoading(false)}
               alt="fun"
               sx={{
-                width: "100%",
+                width: { sm: "70%", lg: "80%" },
                 aspectRatio: "16 / 9",
                 objectFit: "cover",
                 backgroundColor: "rgba(0,0,0,0.1)",

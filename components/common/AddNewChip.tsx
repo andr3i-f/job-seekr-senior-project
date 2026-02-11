@@ -27,6 +27,7 @@ export default function AddNewChip({
       width={"fit-content"}
     >
       <TextField
+        size="small"
         onChange={(e) => setLabel(e.target.value)}
         value={label}
         placeholder={`enter new ${type}. . .`}
@@ -49,6 +50,7 @@ export default function AddNewChip({
         }}
       />
       <IconButton
+        size="small"
         sx={{ color: deepPurple[300] }}
         onClick={() => {
           onAddChip(label.replaceAll(removeFromString, ""));

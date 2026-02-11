@@ -26,8 +26,8 @@ export default function UserPreferencesCard({
           Preferences
         </Typography>
         <ExperienceLevel experienceLevel={experienceLevel} />
-        <StartUpsSwitch startUps={startUps} />
         <WorkFromHome workFromHome={workFromHome} />
+        <StartUpsSwitch startUps={startUps} />
       </CardContent>
     </React.Fragment>
   );

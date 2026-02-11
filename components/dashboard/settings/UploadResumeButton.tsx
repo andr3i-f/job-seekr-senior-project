@@ -1,9 +1,25 @@
+import { parseResume } from "@/app/queries/resume";
+import { useToast } from "@/components/providers/ToastProvider";
 import { CloudUpload, FileUpload } from "@mui/icons-material";
 import { Button, Stack, styled, Typography } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
+import { useMutation } from "@tanstack/react-query";
 
 export default function UploadResumeButton() {
   // TODO: Implement functionality
+  const { show } = useToast();
+
+  const { isPending, mutate, data } = useMutation({
+    mutationFn: (resume: any) => parseResume(resume),
+    onSuccess: () => {
+      show("Successfully updated experience level!", "success");
+    },
+    onError: () => {
+      show("Unable to update experience level!", "error");
+    },
+  })
+
+  console.log(data)
 
   const VisuallyHiddenInput = styled("input")({
     clip: "rect(0 0 0 0)",
@@ -44,7 +60,7 @@ export default function UploadResumeButton() {
         Upload Resume
         <VisuallyHiddenInput
           type={"file"}
-          onChange={(event) => console.log(event.target.files)}
+          onChange={(event) => mutate(event.target.files?.[0])}
         />
       </Button>
     </Stack>

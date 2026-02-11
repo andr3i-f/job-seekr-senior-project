@@ -3,9 +3,10 @@ import axios from "axios";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
-  const body = await req.json();
+  const data = await req.formData();
+  const resumeFile = data.get("resume");
 
-  if (!body || !("resume" in body)) {
+  if (!resumeFile) {
     return NextResponse.json(
       { error: "'resume' is missing from body!" },
       { status: 400 },
@@ -18,11 +19,18 @@ export async function POST(req: Request) {
   }
 
   try {
+    const formData = new FormData();
+    formData.append("resume", resumeFile)
+
+    console.log(formData)
+
     const { data: axiosData } = await axios.post(
-      process.env.JOB_SEEKR_JOB_API! + "/parse-resume",
+      process.env.JOB_SEEKR_JOB_API! + "/resume/parse-resume",
+      formData,
       {
-        body: { resume: body["resume"] },
-        headers: { Authorization: `Bearer ${jwt}` },
+        headers: { 
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${jwt}` },
       },
     );
     return NextResponse.json({ parsed: axiosData.parsed });

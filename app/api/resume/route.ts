@@ -1,4 +1,5 @@
 import { gatherJwtFromSession } from "@/lib/auth/actions";
+import { createClient } from "@/lib/supabase/server";
 import axios from "axios";
 import { NextResponse } from "next/server";
 
@@ -22,18 +23,38 @@ export async function POST(req: Request) {
     const formData = new FormData();
     formData.append("resume", resumeFile);
 
-    console.log(formData);
-
     const { data: axiosData } = await axios.post(
       process.env.JOB_SEEKR_JOB_API! + "/resume/parse-resume",
       formData,
       {
         headers: {
-          "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${jwt}`,
         },
       },
     );
+
+    const parsedData = axiosData.parsed;
+
+    if (!("skills" in parsedData) || !("experience_level" in parsedData)) {
+      return NextResponse.json({ error: "Could not retrive parsed information" }, { status: 500 })
+    }
+
+    const supabase = await createClient();
+    const { data: { user }, error: userError } = await supabase.auth.getUser();
+
+      if (!user || userError) {
+    return NextResponse.json({ error: "Could not retrive user information" }, { status: 400 });
+  }
+
+      const { data, error } = await supabase
+    .from("user_profiles")
+    .update({ experience_level: parsedData["experience_level"] })
+    .eq("auth_user_fk", user.id);
+
+    
+
+    console.log(axiosData.parsed)
+
     return NextResponse.json({ parsed: axiosData.parsed });
   } catch (error) {
     if (axios.isAxiosError(error)) {

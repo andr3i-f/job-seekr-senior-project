@@ -17,9 +17,9 @@ export default function UploadResumeButton() {
     onError: () => {
       show("Unable to update experience level!", "error");
     },
-  })
+  });
 
-  console.log(data)
+  console.log(data);
 
   const VisuallyHiddenInput = styled("input")({
     clip: "rect(0 0 0 0)",

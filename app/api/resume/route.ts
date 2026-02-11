@@ -20,17 +20,18 @@ export async function POST(req: Request) {
 
   try {
     const formData = new FormData();
-    formData.append("resume", resumeFile)
+    formData.append("resume", resumeFile);
 
-    console.log(formData)
+    console.log(formData);
 
     const { data: axiosData } = await axios.post(
       process.env.JOB_SEEKR_JOB_API! + "/resume/parse-resume",
       formData,
       {
-        headers: { 
+        headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${jwt}` },
+          Authorization: `Bearer ${jwt}`,
+        },
       },
     );
     return NextResponse.json({ parsed: axiosData.parsed });

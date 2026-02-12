@@ -36,26 +36,45 @@ export async function POST(req: Request) {
     const parsedData = axiosData.parsed;
 
     if (!("skills" in parsedData) || !("experience_level" in parsedData)) {
-      return NextResponse.json({ error: "Could not retrive parsed information" }, { status: 500 })
+      return NextResponse.json(
+        { error: "Could not retrive parsed information" },
+        { status: 500 },
+      );
     }
 
     const supabase = await createClient();
-    const { data: { user }, error: userError } = await supabase.auth.getUser();
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
 
-      if (!user || userError) {
-    return NextResponse.json({ error: "Could not retrive user information" }, { status: 400 });
-  }
+    if (!user || userError) {
+      return NextResponse.json(
+        { error: "Could not retrive user information" },
+        { status: 500 },
+      );
+    }
 
-      const { data, error } = await supabase
-    .from("user_profiles")
-    .update({ experience_level: parsedData["experience_level"] })
-    .eq("auth_user_fk", user.id);
+    const { error: experienceLevelError } = await supabase
+      .from("user_profiles")
+      .update({ experience_level: parsedData["experience_level"] })
+      .eq("auth_user_fk", user.id);
 
-    
+    const cleanedSkills = parsedData["skills"].map((skill: string) => skill.replaceAll(",", ""))
 
-    console.log(axiosData.parsed)
+    const { error: skillsError } = await supabase
+      .from("user_profiles")
+      .update({ skills: cleanedSkills.join(",") })
+      .eq("auth_user_fk", user.id);
 
-    return NextResponse.json({ parsed: axiosData.parsed });
+    if (experienceLevelError || skillsError) {
+      return NextResponse.json(
+        { error: "Could not update experience level and/or skills" },
+        { status: 500 },
+      );
+    }
+
+    return NextResponse.json({}, { status: 201 });
   } catch (error) {
     if (axios.isAxiosError(error)) {
       return NextResponse.json(

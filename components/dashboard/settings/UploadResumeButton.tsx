@@ -1,25 +1,24 @@
 import { parseResume } from "@/app/queries/resume";
 import { useToast } from "@/components/providers/ToastProvider";
-import { CloudUpload, FileUpload } from "@mui/icons-material";
+import { CloudUpload } from "@mui/icons-material";
 import { Button, Stack, styled, Typography } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export default function UploadResumeButton() {
-  // TODO: Implement functionality
+  const queryClient = useQueryClient();
   const { show } = useToast();
 
-  const { isPending, mutate, data } = useMutation({
+  const { isPending, mutate } = useMutation({
     mutationFn: (resume: any) => parseResume(resume),
     onSuccess: () => {
-      show("Successfully updated experience level!", "success");
+      show("Successfully parsed resume!", "success");
+      queryClient.invalidateQueries({ queryKey: ["dashboard"] });
     },
     onError: () => {
-      show("Unable to update experience level!", "error");
+      show("Unable to parse resume. Please try again later!", "error");
     },
   });
-
-  console.log(data);
 
   const VisuallyHiddenInput = styled("input")({
     clip: "rect(0 0 0 0)",
@@ -45,6 +44,8 @@ export default function UploadResumeButton() {
         Resume
       </Typography>
       <Button
+        disabled={isPending}
+        loadingIndicator={isPending}
         size="small"
         color="primary"
         component="label"
@@ -60,7 +61,20 @@ export default function UploadResumeButton() {
         Upload Resume
         <VisuallyHiddenInput
           type={"file"}
-          onChange={(event) => mutate(event.target.files?.[0])}
+          accept={"application/pdf"}
+          onChange={(event) => { 
+            const files = event.target.files;
+
+            if (!files || files.length == 0) return;
+
+            if (files.length > 1) {
+              show("Submit only one resume at a time", "error");
+              return;
+            }
+
+            const file = files[0]
+            mutate(file);
+          }}
         />
       </Button>
     </Stack>

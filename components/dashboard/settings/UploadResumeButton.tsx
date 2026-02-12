@@ -10,7 +10,7 @@ export default function UploadResumeButton() {
   const { show } = useToast();
 
   const { isPending, mutate } = useMutation({
-    mutationFn: (resume: any) => parseResume(resume),
+    mutationFn: (resume: File) => parseResume(resume),
     onSuccess: () => {
       show("Successfully parsed resume!", "success");
       queryClient.invalidateQueries({ queryKey: ["dashboard"] });
@@ -45,7 +45,6 @@ export default function UploadResumeButton() {
       </Typography>
       <Button
         disabled={isPending}
-        loadingIndicator={isPending}
         size="small"
         color="primary"
         component="label"
@@ -65,7 +64,7 @@ export default function UploadResumeButton() {
           onChange={(event) => {
             const files = event.target.files;
 
-            if (!files || files.length == 0) return;
+            if (!files || files.length === 0) return;
 
             if (files.length > 1) {
               show("Submit only one resume at a time", "error");
@@ -80,6 +79,7 @@ export default function UploadResumeButton() {
             }
 
             mutate(file);
+            event.target.value = "";
           }}
         />
       </Button>

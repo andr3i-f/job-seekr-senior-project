@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export async function parseResume(resume: any) {
+export async function parseResume(resume: File) {
   const formData = new FormData();
   formData.append("resume", resume);
 

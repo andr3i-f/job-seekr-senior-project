@@ -14,6 +14,13 @@ export async function POST(req: Request) {
     );
   }
 
+  if (!(resumeFile instanceof File)) {
+    return NextResponse.json(
+      { error: "'resume' must be a file upload!" },
+      { status: 400 },
+    );
+  }
+
   const jwt = await gatherJwtFromSession();
   if (!jwt) {
     return NextResponse.json({ error: "Not authenticated" }, { status: 400 });
@@ -37,8 +44,28 @@ export async function POST(req: Request) {
 
     if (!("skills" in parsedData) || !("experience_level" in parsedData)) {
       return NextResponse.json(
-        { error: "Could not retrive parsed information" },
+        { error: "Could not retrieve parsed information" },
         { status: 500 },
+      );
+    }
+
+    const allowed_experience_levels = [
+      "Intern",
+      "Junior",
+      "Mid-Level",
+      "Senior",
+    ];
+    if (
+      parsedData["experience_level"] !== null &&
+      (typeof parsedData["experience_level"] !== "string" ||
+        !allowed_experience_levels.includes(parsedData["experience_level"]))
+    ) {
+      return NextResponse.json(
+        {
+          error:
+            "'experienceLevel' must be one of the following: 'Intern', 'Junior', 'Mid-Level', 'Senior'!",
+        },
+        { status: 400 },
       );
     }
 
@@ -50,7 +77,7 @@ export async function POST(req: Request) {
 
     if (!user || userError) {
       return NextResponse.json(
-        { error: "Could not retrive user information" },
+        { error: "Could not retrieve user information" },
         { status: 500 },
       );
     }

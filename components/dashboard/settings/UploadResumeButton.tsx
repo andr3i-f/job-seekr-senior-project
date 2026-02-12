@@ -1,9 +1,36 @@
-import { FileUpload } from "@mui/icons-material";
-import { Button, Stack, Typography } from "@mui/material";
+import { parseResume } from "@/app/queries/resume";
+import { useToast } from "@/components/providers/ToastProvider";
+import { CloudUpload } from "@mui/icons-material";
+import { Button, Stack, styled, Typography } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export default function UploadResumeButton() {
-  // TODO: Implement functionality
+  const queryClient = useQueryClient();
+  const { show } = useToast();
+
+  const { isPending, mutate } = useMutation({
+    mutationFn: (resume: File) => parseResume(resume),
+    onSuccess: () => {
+      show("Successfully parsed resume!", "success");
+      queryClient.invalidateQueries({ queryKey: ["dashboard"] });
+    },
+    onError: () => {
+      show("Unable to parse resume. Please try again later!", "error");
+    },
+  });
+
+  const VisuallyHiddenInput = styled("input")({
+    clip: "rect(0 0 0 0)",
+    clipPath: "inset(50%)",
+    height: 1,
+    overflow: "hidden",
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    whiteSpace: "nowrap",
+    width: 1,
+  });
 
   return (
     <Stack
@@ -17,19 +44,44 @@ export default function UploadResumeButton() {
         Resume
       </Typography>
       <Button
+        disabled={isPending}
         size="small"
         color="primary"
-        disabled={true}
+        component="label"
         variant={"outlined"}
+        startIcon={<CloudUpload />}
         sx={{
           textTransform: "none",
           color: "white",
           borderColor: "white",
           width: "50%",
         }}
-        endIcon={<FileUpload />}
       >
-        Upload resume
+        Upload Resume
+        <VisuallyHiddenInput
+          type={"file"}
+          accept={"application/pdf"}
+          onChange={(event) => {
+            const files = event.target.files;
+
+            if (!files || files.length === 0) return;
+
+            if (files.length > 1) {
+              show("Submit only one resume at a time", "error");
+              return;
+            }
+
+            const file = files[0];
+
+            if (file.size > 5 * 1024 * 1024) {
+              show("Resume must be under 5MB", "error");
+              return;
+            }
+
+            mutate(file);
+            event.target.value = "";
+          }}
+        />
       </Button>
     </Stack>
   );

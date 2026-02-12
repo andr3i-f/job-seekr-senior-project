@@ -62,7 +62,7 @@ export default function UploadResumeButton() {
         <VisuallyHiddenInput
           type={"file"}
           accept={"application/pdf"}
-          onChange={(event) => { 
+          onChange={(event) => {
             const files = event.target.files;
 
             if (!files || files.length == 0) return;
@@ -72,7 +72,13 @@ export default function UploadResumeButton() {
               return;
             }
 
-            const file = files[0]
+            const file = files[0];
+
+            if (file.size > 5 * 1024 * 1024) {
+              show("Resume must be under 5MB", "error");
+              return;
+            }
+
             mutate(file);
           }}
         />

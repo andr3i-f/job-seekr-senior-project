@@ -60,7 +60,9 @@ export async function POST(req: Request) {
       .update({ experience_level: parsedData["experience_level"] })
       .eq("auth_user_fk", user.id);
 
-    const cleanedSkills = parsedData["skills"].map((skill: string) => skill.replaceAll(",", ""))
+    const cleanedSkills = parsedData["skills"].map((skill: string) =>
+      skill.replaceAll(",", ""),
+    );
 
     const { error: skillsError } = await supabase
       .from("user_profiles")

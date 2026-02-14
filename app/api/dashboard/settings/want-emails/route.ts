@@ -4,16 +4,16 @@ import { NextResponse } from "next/server";
 export async function PUT(req: Request) {
   const body = await req.json();
 
-  if (!body || !("startUps" in body)) {
+  if (!body || !("wantEmails" in body)) {
     return NextResponse.json(
-      { error: "'startUps' is missing from body!" },
+      { error: "'wantEmails' is missing from body!" },
       { status: 400 },
     );
   }
 
-  if (body["startUps"] !== null && typeof body["startUps"] !== "boolean") {
+  if (body["wantEmails"] !== null && typeof body["wantEmails"] !== "boolean") {
     return NextResponse.json(
-      { error: "'startUps' is incorrect type!" },
+      { error: "'wantEmails' is incorrect type!" },
       { status: 400 },
     );
   }
@@ -36,15 +36,15 @@ export async function PUT(req: Request) {
 
   const { data, error } = await supabase
     .from("user_settings")
-    .update({ start_ups: body["startUps"] })
+    .update({ want_emails: body["wantEmails"] })
     .eq("user_profile_fk", profile!.id);
 
   if (error) {
     return NextResponse.json(
-      { error: "Unable to update 'startUps' section" },
+      { error: "Unable to update 'wantEmails' section" },
       { status: 500 },
     );
   }
 
-  return NextResponse.json({ startUps: data }, { status: 200 });
+  return NextResponse.json({ wantEmails: data }, { status: 200 });
 }

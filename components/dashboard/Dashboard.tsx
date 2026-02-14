@@ -42,6 +42,8 @@ export default function Dashboard() {
     }
   }, [isError]);
 
+  console.log(data?.settings.want_emails);
+
   return (
     <React.Fragment>
       {isPending && <LinearLoadingBar text={"loading user info. . ."} />}
@@ -93,7 +95,7 @@ export default function Dashboard() {
             </Grid>
             <Grid size={4}>
               <GenericDashboardCard>
-                <GeneralSettingsCard />
+                <GeneralSettingsCard wantEmails={data.settings.want_emails} />
               </GenericDashboardCard>
             </Grid>
           </Grid>

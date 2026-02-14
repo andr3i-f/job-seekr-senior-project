@@ -12,7 +12,8 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: "Not authenticated" }, { status: 400 });
   }
 
-  const user_settings_select = "work_from_home, locations, start_ups";
+  const user_settings_select =
+    "work_from_home, locations, start_ups, want_emails";
   const user_profile_select = "skills, experience_level";
 
   const { data: userProfileData, error: userProfileError } = await supabase

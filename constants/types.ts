@@ -9,6 +9,7 @@ export interface UserSettings {
   work_from_home: string | null;
   locations: string | null;
   start_ups: boolean;
+  want_emails: boolean;
 }
 
 export interface DashboardResponse {

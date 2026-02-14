@@ -4,7 +4,11 @@ import React from "react";
 import UploadResumeButton from "./UploadResumeButton";
 import EmailsSwitch from "./EmailsSwitch";
 
-export default function GeneralSettingsCard() {
+export default function GeneralSettingsCard({
+  wantEmails,
+}: {
+  wantEmails: boolean;
+}) {
   return (
     <React.Fragment>
       <CardContent>
@@ -17,7 +21,7 @@ export default function GeneralSettingsCard() {
           General Settings
         </Typography>
         <UploadResumeButton />
-        <EmailsSwitch />
+        <EmailsSwitch wantEmails={wantEmails} />
       </CardContent>
     </React.Fragment>
   );

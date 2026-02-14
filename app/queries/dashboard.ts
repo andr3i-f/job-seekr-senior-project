@@ -40,3 +40,10 @@ export async function updateStartUps(startUps: boolean) {
   });
   return data.data;
 }
+
+export async function updateEmailOptions(wantEmails: boolean) {
+  const data = await axios.put("/api/dashboard/settings/want-emails", {
+    wantEmails: wantEmails,
+  });
+  return data.data;
+}

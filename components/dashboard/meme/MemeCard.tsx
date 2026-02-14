@@ -15,18 +15,24 @@ export default function MemeCard() {
   const [currentImage, setCurrentImage] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const showRandomImage = () => {
+  const getRandomImage = (): string => {
     let next;
     do {
       next = media[Math.floor(Math.random() * media.length)];
     } while (next === currentImage && media.length > 1);
 
-    setCurrentImage(next);
+    return next;
   };
 
   const onRefresh = async () => {
     setLoading(true);
-    showRandomImage();
+    const next = getRandomImage();
+    const img = new Image();
+    img.src = next;
+    img.onload = () => {
+      setCurrentImage(next);
+      setLoading(false);
+    };
   };
 
   const animals = [
@@ -94,16 +100,18 @@ export default function MemeCard() {
           {loading && (
             <Skeleton
               variant="rounded"
-              width="100%"
-              height="80%"
-              sx={{ aspectRatio: "16 / 9", borderRadius: 2 }}
+              height={"100%"}
+              sx={{
+                aspectRatio: "16 / 9",
+                borderRadius: 2,
+                width: { sm: "70%", lg: "80%" },
+              }}
             />
           )}
-          {currentImage && (
+          {!loading && currentImage && (
             <CardMedia
               component="img"
               image={currentImage}
-              onLoad={() => setLoading(false)}
               alt="fun"
               sx={{
                 width: { sm: "70%", lg: "80%" },

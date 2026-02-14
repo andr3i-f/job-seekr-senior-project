@@ -1,4 +1,4 @@
-import { convertExperienceLevelToSegment } from "@/constants/functions";
+import { convertExperienceLevelToResendSegmentId } from "@/constants/functions";
 import { createClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
@@ -37,28 +37,23 @@ export async function PUT(req: Request) {
     );
   }
 
-  const { data: profile } = await supabase
+  const { data: profile, error: profileError } = await supabase
     .from("user_profiles")
     .select("id, experience_level")
     .eq("auth_user_fk", user.id)
     .single();
 
-  if (!profile?.experience_level) {
+  if (profileError) {
     return NextResponse.json(
-      { error: "Experience level must be set to update email options!" },
+      { error: "Unable to retrive user profile" },
       { status: 400 },
     );
   }
 
-  const { data, error } = await supabase
-    .from("user_settings")
-    .update({ want_emails: body["wantEmails"] })
-    .eq("user_profile_fk", profile!.id);
-
-  if (error) {
+  if (!profile?.experience_level) {
     return NextResponse.json(
-      { error: "Unable to update 'wantEmails' section" },
-      { status: 500 },
+      { error: "Experience level must be set to update email options!" },
+      { status: 400 },
     );
   }
 
@@ -69,16 +64,16 @@ export async function PUT(req: Request) {
       email: user.email,
       segments: [
         {
-          id: convertExperienceLevelToSegment(profile.experience_level),
+          id: convertExperienceLevelToResendSegmentId(profile.experience_level),
         },
       ],
     });
 
     if (addContactError) {
-      return NextResponse.json({
-        error: "Could not create user in Resend!",
-        status: 500,
-      });
+      return NextResponse.json(
+        { error: "Could not create user in Resend!" },
+        { status: 500 },
+      );
     }
   } else if (body["wantEmails"] === false) {
     const { error: removeContactError } = await resend.contacts.remove({
@@ -91,6 +86,18 @@ export async function PUT(req: Request) {
         { status: 500 },
       );
     }
+  }
+
+  const { data, error } = await supabase
+    .from("user_settings")
+    .update({ want_emails: body["wantEmails"] })
+    .eq("user_profile_fk", profile!.id);
+
+  if (error) {
+    return NextResponse.json(
+      { error: "Unable to update 'wantEmails' section" },
+      { status: 500 },
+    );
   }
 
   return NextResponse.json({ wantEmails: data }, { status: 200 });

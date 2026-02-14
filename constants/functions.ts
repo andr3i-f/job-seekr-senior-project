@@ -15,7 +15,7 @@ export function areListsEqual(list1: string[], list2: string[]): boolean {
   return true;
 }
 
-export function convertExperienceLevelToSegment(
+export function convertExperienceLevelToResendSegmentId(
   experienceLevel: "Intern" | "Junior" | "Mid-Level" | "Senior",
 ): string {
   const map = {
@@ -23,6 +23,7 @@ export function convertExperienceLevelToSegment(
     Junior: "5d1e737f-3a54-4a1a-a013-d5873bc761d5",
     "Mid-Level": "72d8e8ec-4420-4dd4-8847-4da5fb58d1cf",
     Senior: "72d8e8ec-4420-4dd4-8847-4da5fb58d1cf",
+    // Mid-Level and Junior are both mapped to the same segment ID because we have a segment limit of 3 with Resend free tier
   };
 
   return map[experienceLevel];

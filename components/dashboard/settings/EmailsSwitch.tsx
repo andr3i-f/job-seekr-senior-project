@@ -4,7 +4,7 @@ import { Check, Restore } from "@mui/icons-material";
 import { IconButton, Stack, Switch, Typography } from "@mui/material";
 import { deepPurple, red } from "@mui/material/colors";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export default function EmailsSwitch({ wantEmails }: { wantEmails: boolean }) {
   const serverWantEmails = useMemo(() => wantEmails, [wantEmails]);
@@ -12,9 +12,13 @@ export default function EmailsSwitch({ wantEmails }: { wantEmails: boolean }) {
     useState<boolean>(serverWantEmails);
   const [modified, setModified] = useState<boolean>(false);
 
+  useEffect(() => {
+    setDraftWantEmails(serverWantEmails);
+    setModified(false);
+  }, [serverWantEmails]);
+
   const queryClient = useQueryClient();
   const { show } = useToast();
-
   const { isPending, mutate } = useMutation({
     mutationFn: (wantEmails: boolean) => updateEmailOptions(wantEmails),
     onSuccess: () => {
@@ -53,7 +57,12 @@ export default function EmailsSwitch({ wantEmails }: { wantEmails: boolean }) {
         width: "100%",
       }}
     >
-      <Typography variant="h6" color={deepPurple[100]} mt={1}>
+      <Typography
+        variant="body1"
+        fontWeight={"bold"}
+        color={deepPurple[100]}
+        mt={1}
+      >
         Want emails?
       </Typography>
       <Stack direction={"row"} spacing={1} width={"100%"}>

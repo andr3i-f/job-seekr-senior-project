@@ -6,7 +6,7 @@ export async function PUT(req: Request) {
 
   if (!body || !("startUps" in body)) {
     return NextResponse.json(
-      { error: "'startUps' list is missing from body!" },
+      { error: "'startUps' is missing from body!" },
       { status: 400 },
     );
   }

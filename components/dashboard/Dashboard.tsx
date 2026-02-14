@@ -93,7 +93,7 @@ export default function Dashboard() {
             </Grid>
             <Grid size={4}>
               <GenericDashboardCard>
-                <GeneralSettingsCard />
+                <GeneralSettingsCard wantEmails={data.settings.want_emails} />
               </GenericDashboardCard>
             </Grid>
           </Grid>

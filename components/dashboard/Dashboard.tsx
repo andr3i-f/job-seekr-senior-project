@@ -42,8 +42,6 @@ export default function Dashboard() {
     }
   }, [isError]);
 
-  console.log(data?.settings.want_emails);
-
   return (
     <React.Fragment>
       {isPending && <LinearLoadingBar text={"loading user info. . ."} />}

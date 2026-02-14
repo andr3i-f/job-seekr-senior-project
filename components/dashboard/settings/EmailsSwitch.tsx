@@ -22,8 +22,21 @@ export default function EmailsSwitch({ wantEmails }: { wantEmails: boolean }) {
       setModified(false);
       queryClient.invalidateQueries({ queryKey: ["dashboard"] });
     },
-    onError: () => {
-      show("Unable to update email options. Please try again later!", "error");
+    onError: (error: any) => {
+      if (
+        error.request?.response &&
+        error.request.responseText.includes("Experience level")
+      ) {
+        show(
+          "Unable to update email options. Set 'Experience Level' first and try again!",
+          "error",
+        );
+      } else {
+        show(
+          "Unable to update email options. Please try again later!",
+          "error",
+        );
+      }
     },
   });
 

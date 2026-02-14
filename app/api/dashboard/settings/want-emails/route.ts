@@ -39,9 +39,16 @@ export async function PUT(req: Request) {
 
   const { data: profile } = await supabase
     .from("user_profiles")
-    .select("id")
+    .select("id, experience_level")
     .eq("auth_user_fk", user.id)
     .single();
+
+  if (!profile?.experience_level) {
+    return NextResponse.json(
+      { error: "Experience level must be set to update email options!" },
+      { status: 400 },
+    );
+  }
 
   const { data, error } = await supabase
     .from("user_settings")
@@ -55,19 +62,6 @@ export async function PUT(req: Request) {
     );
   }
 
-  const { data: experienceLevel } = await supabase
-    .from("user_profiles")
-    .select("experience_level")
-    .eq("auth_user_fk", user.id)
-    .single();
-
-  if (!experienceLevel) {
-    return NextResponse.json(
-      { error: "Experience level must be set to update email options!" },
-      { status: 400 },
-    );
-  }
-
   const resend = new Resend(process.env.RESEND_KEY);
 
   if (body["wantEmails"] === true) {
@@ -75,7 +69,7 @@ export async function PUT(req: Request) {
       email: user.email,
       segments: [
         {
-          id: convertExperienceLevelToSegment(experienceLevel.experience_level),
+          id: convertExperienceLevelToSegment(profile.experience_level),
         },
       ],
     });

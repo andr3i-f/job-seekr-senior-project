@@ -1,5 +1,7 @@
+import { convertExperienceLevelToSegment } from "@/constants/functions";
 import { createClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
+import { Resend } from "resend";
 
 export async function PUT(req: Request) {
   const body = await req.json();
@@ -28,6 +30,13 @@ export async function PUT(req: Request) {
     return NextResponse.json({ error: "Not authenticated" }, { status: 400 });
   }
 
+  if (!user.email) {
+    return NextResponse.json(
+      { error: "Could not get user email" },
+      { status: 400 },
+    );
+  }
+
   const { data: profile } = await supabase
     .from("user_profiles")
     .select("id")
@@ -44,6 +53,50 @@ export async function PUT(req: Request) {
       { error: "Unable to update 'wantEmails' section" },
       { status: 500 },
     );
+  }
+
+  const { data: experienceLevel } = await supabase
+    .from("user_profiles")
+    .select("experience_level")
+    .eq("auth_user_fk", user.id)
+    .single();
+
+  if (!experienceLevel) {
+    return NextResponse.json(
+      { error: "Experience level must be set to update email options!" },
+      { status: 400 },
+    );
+  }
+
+  const resend = new Resend(process.env.RESEND_KEY);
+
+  if (body["wantEmails"] === true) {
+    const { error: addContactError } = await resend.contacts.create({
+      email: user.email,
+      segments: [
+        {
+          id: convertExperienceLevelToSegment(experienceLevel.experience_level),
+        },
+      ],
+    });
+
+    if (addContactError) {
+      return NextResponse.json({
+        error: "Could not create user in Resend!",
+        status: 500,
+      });
+    }
+  } else if (body["wantEmails"] === false) {
+    const { error: removeContactError } = await resend.contacts.remove({
+      email: user.email,
+    });
+
+    if (removeContactError) {
+      return NextResponse.json(
+        { error: "Could not remove contact in Resend!" },
+        { status: 500 },
+      );
+    }
   }
 
   return NextResponse.json({ wantEmails: data }, { status: 200 });

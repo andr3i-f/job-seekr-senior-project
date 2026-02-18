@@ -32,3 +32,5 @@ export interface ToastProviderType {
   message: string;
   severity: AlertColor;
 }
+
+export interface OnboardingInputs extends UserProfile, UserSettings { }

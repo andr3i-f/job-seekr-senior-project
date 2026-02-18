@@ -1,7 +1,12 @@
+"use client";
+
 import { NAVBAR_HEIGHT_IN_VH } from "@/constants/layout";
 import { Box, Button, Stack, Typography } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
+
   return (
     <Box
       sx={{
@@ -17,6 +22,7 @@ export default function Home() {
           123,456 jobs found
         </Typography>
         <Button
+          onClick={() => router.replace("/onboarding")}
           variant="contained"
           sx={{
             mt: "2vh",

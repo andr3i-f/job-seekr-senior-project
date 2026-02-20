@@ -36,7 +36,7 @@ export default function GenericDropdown({
         <Select
           size="small"
           sx={{
-            width: "55%",
+            width: "100%",
             color: "white",
             "& .MuiOutlinedInput-notchedOutline": {
               borderColor: deepPurple[200],

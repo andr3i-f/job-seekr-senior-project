@@ -1,5 +1,5 @@
 import { OnboardingInputs } from "@/constants/types";
-import { CardContent, Stack, Typography } from "@mui/material";
+import { Box, CardContent, Stack, Typography } from "@mui/material";
 import React, { useState } from "react";
 import GenericDashboardCard from "../dashboard/GenericDashboardCard";
 import ChipsManagerCard from "./inputs/ChipsManagerCard";
@@ -36,65 +36,87 @@ export default function Onboarding() {
         width={"100%"}
         border={"1px solid red"}
         direction={"column"}
-        alignItems={"center"}
       >
-        <Typography>enter information manually</Typography>
-        <Typography>OR</Typography>
-        <Typography>parse your resume</Typography>
-        <GenericDashboardCard>
-          <CardContent>
-            <GenericDropdown
-              selected={experienceLevel}
-              setSelected={setExperienceLevel}
-              header={"Experience Level"}
-              options={["Intern", "Junior", "Mid-Level", "Senior"]}
-            />
-          </CardContent>
-        </GenericDashboardCard>
-        <GenericDashboardCard>
-          <ChipsManagerCard
-            data={skills}
-            setData={setSkills}
-            header={"Skills"}
-            splitter={","}
-          />
-        </GenericDashboardCard>
-        <GenericDashboardCard>
-          <ChipsManagerCard
-            data={locations}
-            setData={setLocations}
-            header={"Locations"}
-            splitter={"|"}
-          />
-        </GenericDashboardCard>
-        <GenericDashboardCard>
-          <CardContent>
-            <GenericSwitch
-              checked={startUps}
-              setChecked={setStartUps}
-              header={"Start ups?"}
-            />
-          </CardContent>
-        </GenericDashboardCard>
-        <GenericDashboardCard>
-          <CardContent>
-            <GenericSwitch
-              checked={emails}
-              setChecked={setEmails}
-              header={"Want emails?"}
-            />
-          </CardContent>
-        </GenericDashboardCard>
-        <GenericDashboardCard>
-          <CardContent>
-            <GenericDropdown
-              selected={workFromHome}
-              setSelected={setWorkFromHome}
-              header={"Work from home?"}
-              options={["No preference", "No", "Yes"]}
-            />
-          </CardContent>
-        </GenericDashboardCard>
+        <Stack
+          direction={"column"}
+          alignItems={"center"}
+          alignSelf={"center"}
+          spacing={3}
+          height={"100%"}
+          width={"fit-content"}
+          border={"1px solid green"}
+          p={2}
+        >
+          <Typography>enter information manually</Typography>
+          <Typography>OR</Typography>
+          <Typography>parse your resume</Typography>
+          <Box height={"10%"} width={"fit-content"}>
+            <GenericDashboardCard>
+              <CardContent>
+                <GenericDropdown
+                  selected={experienceLevel}
+                  setSelected={setExperienceLevel}
+                  header={"Experience Level"}
+                  options={["Intern", "Junior", "Mid-Level", "Senior"]}
+                />
+              </CardContent>
+            </GenericDashboardCard>
+          </Box>
+          <Box height={"15%"}>
+            <GenericDashboardCard>
+              <ChipsManagerCard
+                data={skills}
+                setData={setSkills}
+                header={"Skills"}
+                splitter={","}
+              />
+            </GenericDashboardCard>
+          </Box>
+          <Box height={"15%"}>
+            <GenericDashboardCard>
+              <ChipsManagerCard
+                data={locations}
+                setData={setLocations}
+                header={"Locations"}
+                splitter={"|"}
+              />
+            </GenericDashboardCard>
+          </Box>
+          <Box>
+            <GenericDashboardCard>
+              <CardContent>
+                <GenericSwitch
+                  checked={startUps}
+                  setChecked={setStartUps}
+                  header={"Start ups?"}
+                />
+              </CardContent>
+            </GenericDashboardCard>
+          </Box>
+          <Box height={"10%"} width={"fit-content"}>
+            <GenericDashboardCard>
+              <CardContent>
+                <GenericSwitch
+                  checked={emails}
+                  setChecked={setEmails}
+                  header={"Want emails?"}
+                />
+              </CardContent>
+            </GenericDashboardCard>
+          </Box>
+          <Box height={"10%"} width={"fit-content"}>
+            <GenericDashboardCard>
+              <CardContent>
+                <GenericDropdown
+                  selected={workFromHome}
+                  setSelected={setWorkFromHome}
+                  header={"Work from home?"}
+                  options={["No preference", "No", "Yes"]}
+                />
+              </CardContent>
+            </GenericDashboardCard>
+          </Box>
+        </Stack>
       </Stack>
     </React.Fragment>
   );

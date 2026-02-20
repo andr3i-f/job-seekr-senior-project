@@ -9,7 +9,9 @@ export default function OnboardingPage() {
     <Box
       sx={{
         width: "100vw",
-        height: `${100 - NAVBAR_HEIGHT_IN_VH}vh`,
+        display: "flex",
+        flexDirection: "column",
+        minHeight: `${100 - NAVBAR_HEIGHT_IN_VH}vh`,
         p: 4,
       }}
     >

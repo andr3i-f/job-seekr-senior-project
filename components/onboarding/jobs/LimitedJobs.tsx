@@ -1,24 +1,19 @@
-import { getDemoJobs } from "@/app/queries/jobs";
 import { JobCard } from "@/components/dashboard/jobs/RecentJobsCard";
 import LinearLoadingBar from "@/components/LinearLoadingBar";
-import { OnboardingInputs } from "@/constants/types";
+import { Job } from "@/constants/types";
 import { Box, Stack, Typography } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
-import { useQuery } from "@tanstack/react-query";
 import React from "react";
 
 export default function LimitedJobs({
-  shouldSearch,
-  userInfo,
+  isPending,
+  isError,
+  data,
 }: {
-  shouldSearch: boolean;
-  userInfo: OnboardingInputs;
+  isPending: boolean;
+  isError: boolean;
+  data: Job[] | undefined;
 }) {
-  const { isFetching, isError, data } = useQuery({
-    queryKey: ["demo-jobs"],
-    queryFn: () => getDemoJobs(),
-  });
-
   return (
     <React.Fragment>
       <Box
@@ -49,7 +44,12 @@ export default function LimitedJobs({
               p: 2,
             }}
           >
-            {isFetching && <LinearLoadingBar text={"loading jobs. . ."} />}
+            {!isPending && !data && !isError && (
+              <Typography justifySelf={"center"} alignSelf={"center"}>
+                fill the form on the left to see jobs :)
+              </Typography>
+            )}
+            {isPending && <LinearLoadingBar text={"loading jobs. . ."} />}
             {!isError &&
               data &&
               data.map((job) => (

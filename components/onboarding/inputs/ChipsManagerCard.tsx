@@ -27,7 +27,7 @@ export default function ChipsManagerCard({
         </Typography>
         <Grid container spacing={1}>
           {data.map((skill, index) => (
-            <Grid size={{ xs: 4, xl: 2 }} key={`${skill}-${index}`}>
+            <Grid size={4} key={`${skill}-${index}`}>
               <CustomChip
                 label={skill}
                 index={index}

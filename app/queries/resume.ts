@@ -14,6 +14,5 @@ export async function parseOnboardingResume(resume: File) {
   formData.append("resume", resume);
 
   const data = await axios.post("/api/resume/onboarding", formData);
-  console.log(data.data);
   return data.data;
 }

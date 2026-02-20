@@ -30,8 +30,6 @@ export async function POST(req: Request) {
 
     const parsedData = axiosData.parsed;
 
-    console.log(parsedData);
-
     if (!("skills" in parsedData) || !("experience_level" in parsedData)) {
       return NextResponse.json(
         { error: "Could not retrieve parsed information" },

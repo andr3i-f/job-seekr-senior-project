@@ -31,6 +31,7 @@ import {
   updateEmailOptions,
 } from "@/app/queries/dashboard";
 import { useToast } from "../providers/ToastProvider";
+import UploadResumeButton from "./buttons/UploadResumeButton";
 
 export default function Onboarding() {
   const user = useUser();
@@ -140,7 +141,10 @@ export default function Onboarding() {
         >
           <Typography>enter information manually</Typography>
           <Typography>OR</Typography>
-          <Typography>parse your resume</Typography>
+          <UploadResumeButton
+            setExperienceLevel={setExperienceLevel}
+            setSkills={setSkills}
+          />
           <Box height={"10%"} width={"15vw"}>
             <GenericDashboardCard>
               <CardContent>

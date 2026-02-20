@@ -1,10 +1,11 @@
-import { OnboardingInputs } from "@/constants/types";
-import { Box, CardContent, Stack, Typography } from "@mui/material";
+import { Box, Button, CardContent, Stack, Typography } from "@mui/material";
 import React, { useState } from "react";
 import GenericDashboardCard from "../dashboard/GenericDashboardCard";
 import ChipsManagerCard from "./inputs/ChipsManagerCard";
 import GenericSwitch from "./inputs/GenericSwitch";
 import GenericDropdown from "./inputs/GenericDropdown";
+import { deepPurple } from "@mui/material/colors";
+import LimitedJobs from "./jobs/LimitedJobs";
 
 // focus on the idea first that the user is not signed in and might make an account
 // experience level
@@ -35,7 +36,9 @@ export default function Onboarding() {
         height={"100%"}
         width={"100%"}
         border={"1px solid red"}
-        direction={"column"}
+        direction={"row"}
+        justifyItems={"end"}
+        spacing={3}
       >
         <Stack
           direction={"column"}
@@ -44,13 +47,15 @@ export default function Onboarding() {
           spacing={3}
           height={"100%"}
           width={"fit-content"}
-          border={"1px solid green"}
+          border={`2px solid ${deepPurple[300]}`}
+          borderRadius={4}
           p={2}
+          boxShadow={3}
         >
           <Typography>enter information manually</Typography>
           <Typography>OR</Typography>
           <Typography>parse your resume</Typography>
-          <Box height={"10%"} width={"fit-content"}>
+          <Box height={"10%"} width={"100%"}>
             <GenericDashboardCard>
               <CardContent>
                 <GenericDropdown
@@ -82,7 +87,7 @@ export default function Onboarding() {
               />
             </GenericDashboardCard>
           </Box>
-          <Box>
+          <Box height={"10%"} width={"100%"}>
             <GenericDashboardCard>
               <CardContent>
                 <GenericSwitch
@@ -93,7 +98,7 @@ export default function Onboarding() {
               </CardContent>
             </GenericDashboardCard>
           </Box>
-          <Box height={"10%"} width={"fit-content"}>
+          <Box height={"10%"} width={"100%"}>
             <GenericDashboardCard>
               <CardContent>
                 <GenericSwitch
@@ -104,7 +109,7 @@ export default function Onboarding() {
               </CardContent>
             </GenericDashboardCard>
           </Box>
-          <Box height={"10%"} width={"fit-content"}>
+          <Box height={"10%"} width={"100%"}>
             <GenericDashboardCard>
               <CardContent>
                 <GenericDropdown
@@ -116,7 +121,30 @@ export default function Onboarding() {
               </CardContent>
             </GenericDashboardCard>
           </Box>
+          <Button
+            variant="contained"
+            sx={{
+              mt: "2vh",
+              backgroundColor: "white",
+              color: "#64558f",
+              textTransform: "lowercase",
+              borderRadius: "13px",
+            }}
+          >
+            find jobs
+          </Button>
         </Stack>
+        <LimitedJobs
+          shouldSearch={false}
+          userInfo={{
+            skills: skills.join(","),
+            experience_level: experienceLevel,
+            work_from_home: workFromHome,
+            locations: locations.join("|"),
+            start_ups: startUps,
+            want_emails: emails,
+          }}
+        />
       </Stack>
     </React.Fragment>
   );

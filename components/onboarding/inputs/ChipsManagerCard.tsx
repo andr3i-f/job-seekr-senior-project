@@ -18,7 +18,11 @@ export default function ChipsManagerCard({
   return (
     <React.Fragment>
       <CardContent sx={{ flexGrow: 1 }}>
-        <Typography variant={"h5"} fontWeight={"bold"} color={deepPurple[100]}>
+        <Typography
+          variant={"body1"}
+          fontWeight={"bold"}
+          color={deepPurple[100]}
+        >
           {header}
         </Typography>
         <Grid container spacing={1}>

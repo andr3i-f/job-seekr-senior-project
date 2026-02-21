@@ -21,3 +21,8 @@ export async function getDemoJobs(userInfo: OnboardingInputs): Promise<Job[]> {
   });
   return data.data.jobs;
 }
+
+export async function getTotalJobs() {
+  const data = await axios.get("/api/jobs/get-total-jobs");
+  return data.data;
+}

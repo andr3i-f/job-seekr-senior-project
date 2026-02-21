@@ -1,11 +1,24 @@
 "use client";
 
 import { NAVBAR_HEIGHT_IN_VH } from "@/constants/layout";
-import { Box, Button, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Stack,
+  Typography,
+} from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { getTotalJobs } from "./queries/jobs";
 
 export default function Home() {
   const router = useRouter();
+
+  const { isPending, isFetching, isError, data } = useQuery({
+    queryKey: ["total-jobs"],
+    queryFn: () => getTotalJobs(),
+  });
 
   return (
     <Box
@@ -18,9 +31,13 @@ export default function Home() {
         <Typography fontSize={"64px"} sx={{ mt: "25vh" }}>
           find your next job.
         </Typography>
-        <Typography fontSize={"32px"} sx={{ mt: "1vh" }}>
-          123,456 jobs found
-        </Typography>
+        {isFetching && !data ? (
+          <CircularProgress sx={{ color: "white" }} />
+        ) : (
+          <Typography fontSize={"32px"} sx={{ mt: "1vh" }}>
+            {data.totalJobs} total jobs found
+          </Typography>
+        )}
         <Button
           onClick={() => router.replace("/onboarding")}
           variant="contained"

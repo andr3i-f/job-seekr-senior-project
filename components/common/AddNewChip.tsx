@@ -16,6 +16,17 @@ export default function AddNewChip({
 }) {
   const [label, setLabel] = useState("");
 
+  const addChip = () => {
+    onAddChip(label.replaceAll(removeFromString, ""));
+    setLabel("");
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      addChip();
+    }
+  };
+
   return (
     <Stack
       direction={"row"}
@@ -31,6 +42,7 @@ export default function AddNewChip({
         onChange={(e) => setLabel(e.target.value)}
         value={label}
         placeholder={`enter new ${type}. . .`}
+        onKeyDown={handleKeyDown}
         sx={{
           display: "flex",
           "& .MuiOutlinedInput-root": {
@@ -52,10 +64,7 @@ export default function AddNewChip({
       <IconButton
         size="small"
         sx={{ color: deepPurple[300] }}
-        onClick={() => {
-          onAddChip(label.replaceAll(removeFromString, ""));
-          setLabel("");
-        }}
+        onClick={addChip}
         disabled={disabled}
       >
         <Add />

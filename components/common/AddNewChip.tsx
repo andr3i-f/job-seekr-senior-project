@@ -1,7 +1,7 @@
 import { Add } from "@mui/icons-material";
 import { IconButton, Stack, TextField } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
-import { useState } from "react";
+import { KeyboardEvent, useState } from "react";
 
 export default function AddNewChip({
   onAddChip,
@@ -21,7 +21,7 @@ export default function AddNewChip({
     setLabel("");
   };
 
-  const handleKeyDown = (event) => {
+  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       addChip();
     }

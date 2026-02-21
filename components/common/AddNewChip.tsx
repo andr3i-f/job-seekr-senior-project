@@ -1,7 +1,7 @@
 import { Add } from "@mui/icons-material";
 import { IconButton, Stack, TextField } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
-import { useState } from "react";
+import { KeyboardEvent, useState } from "react";
 
 export default function AddNewChip({
   onAddChip,
@@ -15,6 +15,17 @@ export default function AddNewChip({
   removeFromString: string;
 }) {
   const [label, setLabel] = useState("");
+
+  const addChip = () => {
+    onAddChip(label.replaceAll(removeFromString, ""));
+    setLabel("");
+  };
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      addChip();
+    }
+  };
 
   return (
     <Stack
@@ -31,6 +42,7 @@ export default function AddNewChip({
         onChange={(e) => setLabel(e.target.value)}
         value={label}
         placeholder={`enter new ${type}. . .`}
+        onKeyDown={handleKeyDown}
         sx={{
           display: "flex",
           "& .MuiOutlinedInput-root": {
@@ -52,10 +64,7 @@ export default function AddNewChip({
       <IconButton
         size="small"
         sx={{ color: deepPurple[300] }}
-        onClick={() => {
-          onAddChip(label.replaceAll(removeFromString, ""));
-          setLabel("");
-        }}
+        onClick={addChip}
         disabled={disabled}
       >
         <Add />

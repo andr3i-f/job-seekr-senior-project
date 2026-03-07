@@ -1,7 +1,7 @@
 "use server";
 
+import { UserInfo } from "@/constants/types";
 import { createClient } from "@/lib/supabase/server";
-import type { User } from "@supabase/supabase-js";
 
 export async function handleSignInWithGoogle(credential: string | undefined) {
   if (credential === undefined) {
@@ -27,9 +27,18 @@ export async function gatherJwtFromSession() {
   return data?.session?.access_token;
 }
 
-export async function getUserInfo(): Promise<User | null> {
+export async function getUserInfo(): Promise<UserInfo | null> {
   const supabase = await createClient();
   const { data } = await supabase.auth.getUser();
 
-  return data?.user;
+  const { data: adminInfo } = await supabase
+    .from("user_profiles")
+    .select("admin")
+    .single();
+
+  if (data.user === null) {
+    return null;
+  }
+
+  return { ...data?.user, admin: adminInfo?.admin as boolean };
 }

@@ -1,4 +1,5 @@
 import { AlertColor } from "@mui/material";
+import { User } from "@supabase/supabase-js";
 
 export interface UserProfile {
   skills: string | null;
@@ -34,3 +35,7 @@ export interface ToastProviderType {
 }
 
 export interface OnboardingInputs extends UserProfile, UserSettings {}
+
+export interface UserInfo extends User {
+  admin: boolean;
+}

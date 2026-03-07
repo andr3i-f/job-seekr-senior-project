@@ -1,6 +1,6 @@
 "use client";
 
-import { supabase } from "@/lib/supabase/client";
+import { handleSignOut } from "@/lib/auth/actions";
 import { useRouter } from "next/navigation";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Button } from "@mui/material";
@@ -8,8 +8,8 @@ import { Button } from "@mui/material";
 export default function SignOutButton() {
   const router = useRouter();
 
-  const handleSignOut = async () => {
-    await supabase.auth.signOut();
+  const handleClickSignOut = async () => {
+    await handleSignOut();
     router.refresh();
   };
 
@@ -23,7 +23,7 @@ export default function SignOutButton() {
         borderColor: "white",
         ml: 2,
       }}
-      onClick={handleSignOut}
+      onClick={handleClickSignOut}
     >
       sign out
     </Button>

@@ -30,8 +30,3 @@ jobs:
 
       - name: Building
         run: npm run build
-        env:
-          NEXT_PUBLIC_SUPABASE_URL: "https://fake-url.supabase.co"
-          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: "fake-anon-key"
-          SUPABASE_SERVICE_ROLE_KEY: "fake-service-role-key"
-          NODE_ENV: "production"

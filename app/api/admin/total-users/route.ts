@@ -1,4 +1,4 @@
-import { supabaseAdmin } from "@/lib/supabase/admin";
+import { getSupabaseAdmin } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
 
@@ -27,7 +27,7 @@ export async function GET(req: Request) {
     );
   }
 
-  const { count, error } = await supabaseAdmin
+  const { count, error } = await getSupabaseAdmin()
     .from("user_profiles")
     .select("*", { count: "exact", head: true });
 

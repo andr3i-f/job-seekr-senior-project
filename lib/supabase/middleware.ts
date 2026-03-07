@@ -58,6 +58,12 @@ export async function updateSession(request: NextRequest) {
       request.nextUrl.pathname.startsWith(path),
     ) !== undefined
   ) {
+    if (!user) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/";
+      return NextResponse.redirect(url);
+    }
+
     const admin_select = "admin";
     const { data: adminInfo } = await supabase
       .from("user_profiles")

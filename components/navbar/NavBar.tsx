@@ -11,8 +11,7 @@ import { GoogleLogin } from "@react-oauth/google";
 import { handleSignInWithGoogle } from "@/lib/auth/actions";
 import React from "react";
 import { useToast } from "../providers/ToastProvider";
-import { supabase } from "@/lib/supabase/client";
-import SignOutButton from "../common/SignOutButtont";
+import SignOutButton from "../common/SignOutButton";
 
 export default function NavBar(): JSX.Element {
   const { show } = useToast();

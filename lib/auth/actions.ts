@@ -27,6 +27,15 @@ export async function gatherJwtFromSession() {
   return data?.session?.access_token;
 }
 
+export async function handleSignOut() {
+  const supabase = await createClient();
+  const { error } = await supabase.auth.signOut();
+
+  if (error) {
+    throw new Error(`Failed to sign out: ${error.message}`);
+  }
+}
+
 export async function getUserInfo(): Promise<UserInfo | null> {
   const supabase = await createClient();
   const { data } = await supabase.auth.getUser();

@@ -1,15 +1,15 @@
 "use client";
 
 import React, { createContext, useContext } from "react";
-import type { User } from "@supabase/supabase-js";
+import { UserInfo } from "@/constants/types";
 
-const UserContext = createContext<User | null>(null);
+const UserContext = createContext<UserInfo | null>(null);
 
 export const UserProvider = ({
   value,
   children,
 }: {
-  value: User | null;
+  value: UserInfo | null;
   children: React.ReactNode;
 }) => {
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

@@ -98,12 +98,7 @@ export default function RecentJobsCard({
           {!isError &&
             !isFetching &&
             data &&
-            data.map((job) => (
-              <JobCard
-                key={`${job.source}-${job.company_name}-${job.title}`}
-                job={job}
-              />
-            ))}
+            data.map((job) => <JobCard key={`${job.url}`} job={job} />)}
         </Stack>
       </CardContent>
     </React.Fragment>

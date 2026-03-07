@@ -40,6 +40,7 @@ export async function updateSession(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   const PROTECTED_PATHS = ["/dashboard"];
+  const ADMIN_PROTECTED_PATHS = ["/admin/dashboard"];
 
   if (
     !user &&
@@ -50,6 +51,24 @@ export async function updateSession(request: NextRequest) {
     const url = request.nextUrl.clone();
     url.pathname = "/";
     return NextResponse.redirect(url);
+  }
+
+  if (
+    ADMIN_PROTECTED_PATHS.find((path) =>
+      request.nextUrl.pathname.startsWith(path),
+    ) !== undefined
+  ) {
+    const admin_select = "admin";
+    const { data: adminInfo } = await supabase
+      .from("user_profiles")
+      .select(admin_select)
+      .single();
+
+    if (!adminInfo?.admin) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/404";
+      return NextResponse.redirect(url);
+    }
   }
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is.

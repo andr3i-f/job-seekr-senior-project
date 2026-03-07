@@ -1,6 +1,7 @@
 "use client";
 
 import { NAVBAR_HEIGHT_IN_VH } from "@/constants/layout";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import { AccountCircle } from "@mui/icons-material";
 import { Box, Button, Stack } from "@mui/material";
 import { JSX } from "react";
@@ -10,6 +11,8 @@ import { GoogleLogin } from "@react-oauth/google";
 import { handleSignInWithGoogle } from "@/lib/auth/actions";
 import React from "react";
 import { useToast } from "../providers/ToastProvider";
+import { supabase } from "@/lib/supabase/client";
+import SignOutButton from "../common/SignOutButtont";
 
 export default function NavBar(): JSX.Element {
   const { show } = useToast();
@@ -85,6 +88,22 @@ export default function NavBar(): JSX.Element {
                 dashboard
               </Button>
             )}
+            {user?.admin && (
+              <Button
+                variant={"outlined"}
+                endIcon={<AdminPanelSettingsIcon />}
+                sx={{
+                  textTransform: "none",
+                  color: "white",
+                  borderColor: "white",
+                  ml: 2,
+                }}
+                onClick={() => router.replace("/admin/dashboard")}
+              >
+                admin dashboard
+              </Button>
+            )}
+            {user && <SignOutButton />}
           </Box>
         </Stack>
       </Box>

@@ -192,6 +192,7 @@ export default function Onboarding() {
             <GenericDashboardCard>
               <CardContent>
                 <GenericSwitch
+                  disabled={true}
                   checked={emails}
                   setChecked={setEmails}
                   header={"Want emails?"}

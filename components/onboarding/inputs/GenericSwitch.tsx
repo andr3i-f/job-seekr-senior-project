@@ -6,12 +6,12 @@ export default function GenericSwitch({
   checked,
   setChecked,
   header,
-  disabled=false
+  disabled = false,
 }: {
   checked: boolean;
   setChecked: any;
   header: string;
-  disabled?: boolean
+  disabled?: boolean;
 }) {
   return (
     <Stack

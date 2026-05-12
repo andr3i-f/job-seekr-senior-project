@@ -6,10 +6,12 @@ export default function GenericSwitch({
   checked,
   setChecked,
   header,
+  disabled = false,
 }: {
   checked: boolean;
   setChecked: any;
   header: string;
+  disabled?: boolean;
 }) {
   return (
     <Stack
@@ -29,6 +31,7 @@ export default function GenericSwitch({
       </Typography>
       <Stack direction={"row"} spacing={1} width={"100%"}>
         <Switch
+          disabled={disabled}
           size={"small"}
           onChange={(e) => {
             setChecked(e.target.checked);

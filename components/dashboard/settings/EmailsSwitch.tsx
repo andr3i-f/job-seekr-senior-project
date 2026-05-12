@@ -68,6 +68,7 @@ export default function EmailsSwitch({ wantEmails }: { wantEmails: boolean }) {
       <Stack direction={"row"} spacing={1} width={"100%"}>
         <Switch
           size={"small"}
+          disabled={true}
           onChange={(e) => {
             setModified(e.target.checked !== serverWantEmails);
             setDraftWantEmails(e.target.checked);

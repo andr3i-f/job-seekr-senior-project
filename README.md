@@ -1,3 +1,7 @@
+# Poster Board
+<img width="872" height="561" alt="image" src="https://github.com/user-attachments/assets/f8313180-33d6-44de-8e86-546f90b0a124" />
+
+
 # [jobseekr.dev](jobseekr.dev) frontend (Senior Project)
 
 ## Application Outline ( to be revised )
